@@ -33,6 +33,9 @@ def index():
 
 # Brains of the Flask website.
 class SiteLogic():
+    # !!! IMPLEMENT !!!
+    # Try to make this return "rows" instead of whatever result from execute()
+
     # Generic function for executing queries that
     #+don't require much any extra interaction.
     def __execQuery(self, query):
@@ -80,8 +83,8 @@ class SiteLogic():
         
         # Data table.
         self.__execQuery(
-            "CREATE TABLE IF NOT EXISTS " +
-            "statistics(readingId SERIAL PRIMARY KEY NOT NULL, " +
+            "CREATE TABLE IF NOT EXISTS statistics(" +
+            "readingId SERIAL PRIMARY KEY NOT NULL, " +
             "moisture VARCHAR(20) NOT NULL, " +
             "light VARCHAR(20) NOT NULL, " +
             "timestamp VARCHAR(20) NOT NULL);")
@@ -91,7 +94,7 @@ class SiteLogic():
             self.__execQuery("DROP TABLE IF EXISTS settings;")
 
         self.__execQuery(
-            "CREATE TABLE IF NOT EXISTS statistics" +
+            "CREATE TABLE IF NOT EXISTS settings" +
             "(name VARCHAR(22) PRIMARY KEY NOT NULL, " +
             "state VARCHAR(22) NOT NULL);")
         
@@ -115,17 +118,7 @@ class SiteLogic():
     def getTime(self):
         return datetime.now().strftime("%H:%M:%S")
 
-    # Template data getter
-    # I am aware that using separate functions to make multiple
-    #+SQL queries is inefficient but this doesn't need to be perfect.
-    def getTemplateData(self):
-        return { 'humidity' : self.getDBmoisture(),
-                 'temperature' : self.getDBlight(),
-                 'recent' : self.getRecent(20),
-                 'time' : self.getTime(),
-                 'average' : self.getDBAverage(100)}
-
-    # Average temp/humid DB getter
+    # Average sensor reading DB getter
     def getDBAverage(self, ammount):
         with self.__conn:
             cursor = self.__conn.cursor()
@@ -139,6 +132,30 @@ class SiteLogic():
             # !!! IMPLEMENT !!!
             # Not sure what format it will return, might need typecasting.
             return rows
+    
+    # Most recent readings DB getter.
+    def getDBRecent(self, ammount):
+        query = "SELECT timestamp, moisture, light FROM statistics " +
+                "ORDER BY readingId DESC LIMIT " + str(ammount) + ";"
+
+        # !!! IMPLEMENT !!!
+        # Do query.
+
+        #return rows
+
+    # Template data getter
+    # I am aware that using separate functions to make multiple
+    #+SQL queries is inefficient but this doesn't need to be perfect.
+    # !!! IMPLEMENT !!!
+    # "moisture" and "light" are both equal to the most recent readings from
+    #+"recent" so we may not need them as they just waste the SQL server's time
+    #+with an unnecessary query.
+    def getTemplateData(self):
+        return { 'moisture' : self.getDBmoisture(),
+                 'light' : self.getDBlight(),
+                 'recent' : self.getRecent(20),
+                 'time' : self.getTime(),
+                 'average' : self.getDBAverage(100)}
 
     # Loop for reading serial input from sensors.
     # size_t delay
