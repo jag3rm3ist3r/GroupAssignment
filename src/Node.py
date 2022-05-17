@@ -44,4 +44,5 @@ def main():
 if __name__ == '__main__':
     # Thank you Mario!
     # But our main() is in another castle. 
-    main()
+    while(1):
+        main()
