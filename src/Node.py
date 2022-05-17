@@ -1,3 +1,5 @@
+import sys
+
 data = {"watered": 0,
         "button": 0,
         "water_level": 0,
@@ -7,6 +9,8 @@ data = {"watered": 0,
 
 
 def main():
+    ser = serial.Serial(sys.argv[1], 9600, timeout = 10)
+    ser.flush()
     new_data = False
     
     # Read serial data into data dict.
