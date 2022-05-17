@@ -14,6 +14,8 @@ import sys
 from decimal import Decimal
 # Flask for webpage
 from flask import Flask, render_template
+# MQTT for communication with ThingsBoard and both Nodes.
+import paho.mqtt.client as mqtt
 
 
 # Flask init.
@@ -163,7 +165,8 @@ class SiteLogic():
 
 # Main object, must be global for Flask to access it.
 # Set argument to true if you would like to retain existing data in table.
-sl = SiteLogic(True)
+#sl = SiteLogic(True)
+sl = SiteLogic(False)
 # Keep all the siteLogic stuff in it's own thread but declare it outside
 #+so that flask has access to it.
 # There doesn't seem to be a good way to pass things into flask.
@@ -172,8 +175,6 @@ def initLoop():
     while(1):
         sl.sensorLoop(10)
 
-# Main function, set up serial bus, indicate port for the webserver,
-# ans start the service.SKIP
 def main():
     # Run main object in it's own thread.
     # This doesn't run when we create the object because we need to

@@ -1,4 +1,7 @@
+# CLI arguments
 import sys
+# MQTT for communication with the server.
+import paho.mqtt.client as mqtt
 
 data = {"watered": 0,
         "button": 0,
