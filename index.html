@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+	<head>
+		<title>IOT Group Assignment - {{ time }}</title>
+		<meta http-equiv="refresh" content="1;http://localhost" />
+		<style>
+			table {
+				border-spacing: 0;
+				min-width: 20em;
+				width: 100%;
+				table-layout: fixed;
+			}
+			th, td {
+				text-align: center;
+				padding: 0.5em;
+			}
+			tr:nth-child(even) {
+				background-color: #eeeeee;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>IOT Group Assignment - {{ time }}</h1>
+
+		<h2>Soil Moisture</h2>
+		The soil moisture is currently {{ temperature }}
+		<h2>Light</h2>
+		The light is currently {{ humidity }}
+		</br></br></br>
+		
+		<h2>Sensor reading history</h2>		
+		<table>
+		<th>Timestamp</th><th>Soil Moisture</th><th>Light</th>
+		{% for row in recent %}
+			<tr>
+				<td>{{ row[0] }}</td>
+				<td>{{ row[1] }}&deg;C</td>
+				<td>{{ row[2] }}%</td>
+			</tr>
+		{% endfor %}
+		</table>
+				<table>
+			<th></th><th>Average</th><th>Average</th>
+			<tr style="background-color: #FFFFFF;">
+				<td></td>
+				<td>{{ average[0] }}</td>
+				<td>{{ average[1] }}</td>
+			</tr>
+		</table>
+	</body>
+</html>
