@@ -146,14 +146,19 @@ class SiteLogic():
     # Template data getter
     # I am aware that using separate functions to make multiple
     #+SQL queries is inefficient but this doesn't need to be perfect.
-    # !!! IMPLEMENT !!!
-    # "moisture" and "light" are both equal to the most recent readings from
-    #+"recent" so we may not need them as they just waste the SQL server's time
-    #+with an unnecessary query.
     def getTemplateData(self):
+        # !!! IMPLEMENT !!!
+        # "moisture" and "light" are both equal to the most recent readings from
+        #+"recent" so we may not need them as they just waste the SQL server's time
+        #+with an unnecessary query.
+        #recent = getDBRecent(20)
+        # Get latest moisture and light readings from recent.
+        #moisture = recent[?]
+        #light = recent[?]
+
         return { 'moisture' : self.getDBmoisture(),
                  'light' : self.getDBlight(),
-                 'recent' : self.getRecent(20),
+                 'recent' : self.getDBRecent(20),
                  'time' : self.getTime(),
                  'average' : self.getDBAverage(100)}
 

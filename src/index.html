@@ -21,13 +21,15 @@
 	<body>
 		<h1>IOT Group Assignment - {{ time }}</h1>
 
+		<!-- Current status of the sensors. -->
 		<h2>Soil Moisture</h2>
-		The soil moisture is currently {{ temperature }}
+		The soil moisture is currently {{ moisture }}
 		<h2>Light</h2>
-		The light is currently {{ humidity }}
+		The light is currently {{ light }}
 		</br></br></br>
 		
 		<h2>Sensor reading history</h2>		
+		<!-- Table containing recent sensor data from SQL database. -->
 		<table>
 		<th>Timestamp</th><th>Soil Moisture</th><th>Light</th>
 		{% for row in recent %}

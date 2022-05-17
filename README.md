@@ -4,35 +4,41 @@
 classDiagram
 
 class ThingsBoard
-class Rasp1
-class Rasp2
-class Ard1
-class Ard2
+class Raspberry1
+class Raspberry2
+class Arduino1
+class Arduino2
 class CloudServer
-class SM1
-class SM2
+class Moisture1
+class Moisture2
 class Light1
 class Light2
 class Button1
 class Button2
 class ThirdPartyAPI
 
-SM1 --> Ard1
-SM2 --> Ard2
-Light1 --> Ard1
-Light2 --> Ard2
-Button1 --> Ard1
-Button2 --> Ard2
-
-Ard1 --> Rasp1 : Serial
-Ard2 --> Rasp2 : Serial
-Rasp1 --> CloudServer : MQTT
-Rasp2 --> CloudServer : MQTT
+Moisture1 : sensor
+Moisture2 : sensor
+Light1 : sensor
+Light2 : sensor
 CloudServer : SQL Server
 CloudServer : Website
 CloudServer : Weather API
-ThirdPartyAPI --> CloudServer : Weather
 ThirdPartyAPI : Weather
+ThingsBoard : Graphs
+
+Moisture1 --> Arduino1
+Moisture2 --> Arduino2
+Light1 --> Arduino1
+Light2 --> Arduino2
+Button1 --> Arduino1
+Button2 --> Arduino2
+
+Arduino1 --> Raspberry1 : Serial
+Arduino2 --> Raspberry2 : Serial
+Raspberry1 --> CloudServer : MQTT
+Raspberry2 --> CloudServer : MQTT
+ThirdPartyAPI --> CloudServer : Weather
 CloudServer --> ThingsBoard : MQTT
 
 ```

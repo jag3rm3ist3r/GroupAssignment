@@ -16,7 +16,7 @@ def main():
     ser.flush()
     new_data = False
     
-    # Read serial data into data dict.
+    # Read serial data into data dict. but only if there is data in the buffer.
     while(ser.in_waiting > 0):
         new_data = True
         for i in range(0, 4):
@@ -29,6 +29,7 @@ def main():
                 ):
                 data[text[0]] = text[1]
     
+    # Do something with data if some was read.
     if new_data:
         seconds = time.time()
         last_update = time.ctime(seconds)
@@ -49,3 +50,5 @@ if __name__ == '__main__':
     # But our main() is in another castle. 
     while(1):
         main()
+        # Wait a bit before restarting the loop.
+        delay(2)
