@@ -54,19 +54,6 @@ class SiteLogic():
 
     # siteLogic constructor
     def __init__(self, persist):
-        # argv[1] == /dev/tty????
-        #try:
-            #self.__ser = serial.Serial(sys.argv[1], 9600, timeout = 10)
-        #except:
-            # If serial connection fails just kill the thread.
-            #print("Issue with either serial or argv[1].")
-            #quit()
-
-        # Flush any garbage in buffer.
-        self.__ser.flush()
-
-        # Set default values on raspberry pi devices here.
-        
         # SQL connection
         self.__conn = psycopg2.connect(
             database="group",
@@ -75,9 +62,6 @@ class SiteLogic():
             host = "127.0.0.1",
             port = "5432")
         
-
-        # !!! IMPLEMENT !!!
-        # Decide on which tables need to be created on startup.
 
         # Clear old database entries.
         if not (persist):
@@ -122,10 +106,10 @@ class SiteLogic():
         # argv[1]  : serial device
         # argv[>1] : ip addresses of nodes
         # Add a client for every IP passed as an argument.
-        for i in range(2, len(sys.argv)):
+        for i in range(1, len(sys.argv)):
             # User userdata as the index for if we don't know which client is
             #+calling a function.
-            self.__client[i] = mqttclient.Client(userdata=i-2)
+            self.__client[i] = mqttclient.Client(userdata=i-1)
             self.__client[i].on_connect = self.on_connect
             self.__client[i].on_message = self.on_message
 
