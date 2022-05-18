@@ -55,11 +55,12 @@ class SiteLogic():
     # siteLogic constructor
     def __init__(self, persist):
         # argv[1] == /dev/tty????
-        try:
-            self.__ser = serial.Serial(sys.argv[1], 9600, timeout = 10)
-        except:
+        #try:
+            #self.__ser = serial.Serial(sys.argv[1], 9600, timeout = 10)
+        #except:
             # If serial connection fails just kill the thread.
-            quit()
+            #print("Issue with either serial or argv[1].")
+            #quit()
 
         # Flush any garbage in buffer.
         self.__ser.flush()
