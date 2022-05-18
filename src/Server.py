@@ -109,7 +109,7 @@ class SiteLogic():
         for i in range(len(sys.argv)):
             # Make sure we ignore the autopassed 0th argument.
             if i == 0:
-                i += 1
+                continue
 
             # j is the array index and i is the argument index.
             j = i - 1
