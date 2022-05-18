@@ -224,7 +224,7 @@ def main():
 if __name__ == '__main__':
     #global sl
     # Set argument to true if you would like to retain existing data in table.
-    sl = SiteLogic(False)
+    #sl = SiteLogic(False)
     # Thank you Mario!
     # But our main() is in another castle. 
     main()
