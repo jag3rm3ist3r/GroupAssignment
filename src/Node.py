@@ -41,7 +41,7 @@ def main():
         data["last_update"] = time.ctime(seconds)
 
         # Send data over MQTT.
-        topic = "arduino1/moisture"
+        topic = "arduino"
         message = "test"
         targetip = sys.argv[2]
         mqttpublish.single(topic, message, hostname=targetip)

@@ -22,17 +22,12 @@ import paho.mqtt.client as mqttclient
 app = Flask(__name__)
 
 
-# index.html file operation
-@app.route("/")
-def index():
-    global sl
-    # This data will be sent to index.html
-    templateData = sl.getTemplateData()
-    return render_template('index.html', **templateData)
-
 
 # Brains of the Flask website.
 class SiteLogic():
+    # !!! DEBUG CODE !!!
+    # You should only see this print it's name once.
+    print(self)
     # !!! IMPLEMENT !!!
     # Try to make this return "rows" instead of whatever result from execute()
 
@@ -105,8 +100,6 @@ class SiteLogic():
         # argv[1]  : serial device
         # argv[>1] : ip addresses of nodes
         # Add a client for every IP passed as an argument.
-        # !!! DEBUG CODE !!!
-        print(self)
         for i in range(len(sys.argv) - 1):
             # i is the array index and j is the argument index.
             j = i + 1
@@ -217,9 +210,16 @@ def on_message(thisclient, userdata, message):
 sl = SiteLogic(False)
 
 
-def main():
+# index.html file operation
+@app.route("/")
+def index():
     global sl
+    # This data will be sent to index.html
+    templateData = sl.getTemplateData()
+    return render_template('index.html', **templateData)
 
+
+def main():
     # Start flask.
     app.run(host='0.0.0.0', port = 80, debug = True, threaded = False)
 
