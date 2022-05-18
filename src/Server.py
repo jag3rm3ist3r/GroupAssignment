@@ -17,7 +17,7 @@ from flask import Flask, render_template
 import paho.mqtt.publish as mqttpublish
 import paho.mqtt.client as mqttclient
 # pdb debugger
-import pdb; pdb.set_trace()
+#import pdb; pdb.set_trace()
 
 
 # Flask init.
