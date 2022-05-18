@@ -115,10 +115,7 @@ class SiteLogic():
             j = i - 1
             # User userdata as the index for if we don't know which client is
             #+calling a function.
-            # !!! DEBUG CODE !!!
-            print(i)
-            print(j)
-            self.__client[j] = mqttclient.Client(userdata=str(j))
+            self.__client.append(mqttclient.Client(userdata=str(j)))
             self.__client[j].on_connect = self.on_connect
             self.__client[j].on_message = self.on_message
 
