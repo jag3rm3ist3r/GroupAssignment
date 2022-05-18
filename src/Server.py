@@ -26,7 +26,7 @@ app = Flask(__name__)
 
 
 # Brains of the Flask website.
-class SiteLogic():
+class SiteLogic:
     # !!! IMPLEMENT !!!
     # Try to make this return "rows" instead of whatever result from execute()
 
@@ -109,7 +109,7 @@ class SiteLogic():
         # argv[>1] : ip addresses of nodes
         # Add a client for every IP passed as an argument.
         for i in range(len(sys.argv) - 1):
-            # i is the array index and j is the argument index.
+            # i is the array index and j is the sys.argv index.
             j = i + 1
             # User userdata as the index for if we don't know which client is
             #+calling a function.
