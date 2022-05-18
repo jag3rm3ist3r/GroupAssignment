@@ -218,7 +218,7 @@ def index():
 
 def main():
     # Start flask.
-    app.run(host='0.0.0.0', port = 80, debug = True, threaded = False)
+    app.run(host='0.0.0.0', port = 80, debug = True, threaded = False, use_reloader=False)
 
 
 if __name__ == '__main__':
