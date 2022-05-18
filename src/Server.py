@@ -182,8 +182,8 @@ class SiteLogic():
     
     # Most recent readings DB getter.
     def getDBRecent(self, ammount):
-        query = "SELECT timestamp, moisture, light FROM statistics " +
-                "ORDER BY readingId DESC LIMIT " + str(ammount) + ";"
+        query =  "SELECT timestamp, moisture, light FROM statistics "
+        query += "ORDER BY readingId DESC LIMIT " + str(ammount) + ";"
 
         # !!! IMPLEMENT !!!
         # Do query.
