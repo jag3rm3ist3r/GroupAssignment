@@ -192,6 +192,7 @@ def on_connect(thisclient, userdata, flags, rc):
     print(  "Subscribing to " + topic +
             " on " + str(sys.argv[userdata]) + ".")
     thisclient.subscribe(topic)
+    print("Subscribed.")
 
 # Function bound to pahoMQTT
 # thisclient : ?
