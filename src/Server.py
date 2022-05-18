@@ -123,6 +123,13 @@ class SiteLogic():
             # args: host, port, keepalive
             self.__client[i].connect(sys.argv[j], port, 60)
 
+        # Start MQTT loop(s).
+        for c in self.__client:
+            print("Starting loop " + str(c))
+            c.loop_start()
+        
+        print("mqtt loop init complete")
+
     # Time getter
     def getTime(self):
         return datetime.now().strftime("%H:%M:%S")
@@ -171,15 +178,6 @@ class SiteLogic():
                  'time' : self.getTime(),
                  'average' : self.getDBAverage(100)}
 
-    # Loop for MQTT from sensors.
-    def sensorLoop(self):
-        # Enter MQTT loop.
-        for c in self.__client:
-            print("Starting loop " + str(c))
-            c.loop_start()
-        
-        print("mqtt loop init complete")
-
 
 # !!! IMPLEMENT !!!
 # These were in the SiteLogic class before but now they're here to make sure
@@ -221,7 +219,6 @@ sl = SiteLogic(False)
 
 def main():
     global sl
-    sl.sensorLoop()
 
     # Start flask.
     app.run(host='0.0.0.0', port = 80, debug = True, threaded = False)
