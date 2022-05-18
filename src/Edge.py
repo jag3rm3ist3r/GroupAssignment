@@ -6,6 +6,7 @@ import sys
 # MQTT for communication with the server.
 import paho.mqtt.publish as mqttpublish
 
+#no longer using this dict
 node1 = {"watered": 0,
         "button": 0,
         "water_level": 0,
@@ -13,21 +14,14 @@ node1 = {"watered": 0,
         "time_record": 0,
         "last_update": 0}
 
-node2 = node1.copy()
-
 def sendData(topic, message):
     targetip = sys.argv[2]
     mqttpublish.single(topic, message, hostname=targetip)
 
-
 def serialDataFiltering(text):
-    #organize serial data as node dictionary
-    if (text[0].slice(0, 7) == "node1/"):
-        node = node1
-    if (text[0].slice(0, 7) == "node2/"):
-         node = node2
 
-    key = text[0].slice(7, -1)
+    #the string without node1/
+    key = text[0]
 
     if (
             key == "watered" or
@@ -35,29 +29,26 @@ def serialDataFiltering(text):
             key == "water_level" or
             key == "light_level"
         ):
-        #send the correct node's data
-        topic = f"{node}/{key}"
+        #send the correct node's data directly
+        topic = f"{key}"
         sendData(topic, text[1])
 
 def main():
     # Grab serial device (argument 1)
     ser = serial.Serial(sys.argv[1], 9600, timeout = 10)
     ser.flush()
-    new_data = False
-    
-    # Read serial data into data dict. but only if there is data in the buffer.
-    while(ser.in_waiting > 0):
-        new_data = True
-        #change from do 4 times to for every line in serial
-        for i in ser.in_waiting):
-            text = ser.readline().decode('utf-8').strip().split(" = ")
-            #data coming in will have node name in front (ex: node1/)
-            serialDataFiltering(text)
+    while(true):
+        # Read serial data if there is data in the buffer and send it.
+        while(ser.in_waiting > 0):
+            #change from do 4 times to for every line in serial
+            for i in ser.in_waiting):
+                text = ser.readline().decode('utf-8').strip().split(" = ")
+                #data coming in will have node name in front (ex: node1/)
+                serialDataFiltering(text)
 
     # !!! IMPLEMENT !!!
     # Receive MQTT signal to turn pump/LED on and off.
     # (ser.write(b"2"))
- 
 
 if __name__ == '__main__':
     # Thank you Mario!
