@@ -36,7 +36,6 @@ class SiteLogic:
     # Generic function for executing queries that
     #+don't require much any extra interaction.
     def __execQuery(self, query):
-        global conn
         result = None
         
         with self.__conn:
@@ -208,13 +207,6 @@ class SiteLogic:
                  'average' : self.getDBAverage(100)}
 
 
-
-
-# Main object, must be global for Flask to access it.
-# Set argument to true if you would like to retain existing data in table.
-#sl = SiteLogic(True)
-
-
 # index.html file operation
 @app.route("/")
 def index():
@@ -230,6 +222,8 @@ def main():
 
 
 if __name__ == '__main__':
+    #global sl
+    # Set argument to true if you would like to retain existing data in table.
     sl = SiteLogic(False)
     # Thank you Mario!
     # But our main() is in another castle. 
