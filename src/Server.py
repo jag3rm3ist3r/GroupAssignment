@@ -56,7 +56,7 @@ class SiteLogic():
     def __init__(self, persist):
         # SQL connection
         self.__conn = psycopg2.connect(
-            database="group",
+            database="pi",
             user = "pi",
             password = "pi",
             host = "127.0.0.1",
@@ -197,7 +197,10 @@ class SiteLogic():
     # Loop for MQTT from sensors.
     def sensorLoop(self):
         # Enter MQTT loop.
-        self.__client.loop_forever()
+        for c in self.__client:
+            thread.start_new_thread(c.loop_forever(), ())
+        
+        print("mqtt loop init complete")
 
 # Main object, must be global for Flask to access it.
 # Set argument to true if you would like to retain existing data in table.
@@ -207,19 +210,8 @@ sl = SiteLogic(False)
 
 def main():
     global sl
-    # Run main object in it's own thread.
-    # This doesn't run when we create the object because we need to
-    #+do some setup first and we need it inside of it's own thread.
-    #thread.start_new_thread(sl.sensorLoop, ())
-    slThread = thread.start_new_thread(sl.sensorLoop(), ())
+    sl.sensorLoop()
 
-    # !!! IMPLEMENT !!!
-    # Start the MQTT loop in it's own thread if necessary.
-    #mlThread = thread.start_new_thread(somefunc, ())
-
-    # IMPLEMENT : If slThread dies then nothing much happens.
-    # The application should exit if either of these threads exit.
-    
     # Start flask.
     app.run(host='0.0.0.0', port = 80, debug = True, threaded = False)
 
