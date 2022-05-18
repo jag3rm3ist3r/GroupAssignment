@@ -6,6 +6,9 @@ import sys
 # MQTT for communication with the server.
 import paho.mqtt.publish as mqttpublish
 
+import serial
+import time
+
 #no longer using this dict
 node1 = {"watered": 0,
         "button": 0,
@@ -14,8 +17,10 @@ node1 = {"watered": 0,
         "time_record": 0,
         "last_update": 0}
 
+#hostname is sender ip
 def sendData(topic, message):
     targetip = sys.argv[2]
+    print(topic + " " + message)
     mqttpublish.single(topic, message, hostname=targetip)
 
 def serialDataFiltering(text):
@@ -37,14 +42,13 @@ def main():
     # Grab serial device (argument 1)
     ser = serial.Serial(sys.argv[1], 9600, timeout = 10)
     ser.flush()
-    while(true):
+    while(True):
         # Read serial data if there is data in the buffer and send it.
         while(ser.in_waiting > 0):
             #change from do 4 times to for every line in serial
-            for i in ser.in_waiting):
-                text = ser.readline().decode('utf-8').strip().split(" = ")
-                #data coming in will have node name in front (ex: node1/)
-                serialDataFiltering(text)
+            text = ser.readline().decode('utf-8').strip().split(" = ")
+            #data coming in will have node name in front (ex: node1/)
+            serialDataFiltering(text)
 
     # !!! IMPLEMENT !!!
     
