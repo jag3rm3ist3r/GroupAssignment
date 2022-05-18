@@ -115,6 +115,7 @@ class SiteLogic():
             # User userdata as the index for if we don't know which client is
             #+calling a function.
             self.__client.append(mqttclient.Client(userdata=str(j)))
+            print("Creating MQTT client " + str(i))
             self.__client[j].on_connect = self.on_connect
             self.__client[j].on_message = self.on_message
 
