@@ -199,7 +199,7 @@ def on_connect(thisclient, userdata, flags, rc):
 # message : The message that was received.
 def on_message(thisclient, userdata, message):
     # Debug code to display messages as they're received.
-    print(str(message.topic) + " " + str(message.payload))
+    #print(str(message.topic) + " " + str(message.payload))
 
     raise Exception('Received message from rpi! Success!')
 
