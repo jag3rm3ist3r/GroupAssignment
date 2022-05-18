@@ -116,7 +116,7 @@ class SiteLogic():
             cursor.close()
 
         # MQTT Client initializaiton.
-        self.__client[]
+        self.__client = []
         # argv[0]  : this file
         # argv[1]  : serial device
         # argv[>1] : ip addresses of nodes
@@ -218,10 +218,6 @@ class SiteLogic():
 # Set argument to true if you would like to retain existing data in table.
 #sl = SiteLogic(True)
 sl = SiteLogic(False)
-
-
-class MQTTLogic():
-    def __init__(self):
 
 
 def main():
