@@ -106,7 +106,11 @@ class SiteLogic():
         # argv[1]  : serial device
         # argv[>1] : ip addresses of nodes
         # Add a client for every IP passed as an argument.
-        for i in range(1, len(sys.argv)):
+        for i in range(sys.argv):
+            # Make sure we ignore the autopassed 0th argument.
+            if i == sys.argv[0]:
+                continue
+
             # User userdata as the index for if we don't know which client is
             #+calling a function.
             self.__client[i] = mqttclient.Client(userdata=i-1)
