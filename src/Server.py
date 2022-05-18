@@ -111,17 +111,19 @@ class SiteLogic():
             if i == 0:
                 continue
 
+            # j is the array index and i is the argument index.
+            j = i - 1
             # User userdata as the index for if we don't know which client is
             #+calling a function.
-            self.__client[i] = mqttclient.Client(userdata=i-1)
-            self.__client[i].on_connect = self.on_connect
-            self.__client[i].on_message = self.on_message
+            self.__client[j] = mqttclient.Client(userdata=j)
+            self.__client[j].on_connect = self.on_connect
+            self.__client[j].on_message = self.on_message
 
             # Initialize MQTT connection.
             port = 1883
             print("Connecting on " + sys.argv[i] + ":" + port)
             # args: host, port, keepalive
-            self.__client[i].connect(sys.argv[i], port, 60)
+            self.__client[j].connect(sys.argv[i], port, 60)
 
     # Function bound to pahoMQTT
     # This function should not have "self" as an argument.
