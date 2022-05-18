@@ -25,6 +25,8 @@ def main():
         new_data = True
         for i in range(0, 4):
             text = ser.readline().decode('utf-8').strip().split(" = ")
+            #data coming in will have node name in front
+
             if (
                     text[0] == "watered" or
                     text[0] == "button" or
@@ -41,7 +43,7 @@ def main():
         data["last_update"] = time.ctime(seconds)
 
         # Send data over MQTT.
-        topic = "arduino"
+        topic = edge_name + "arduino"
         message = "test"
         targetip = sys.argv[2]
         mqttpublish.single(topic, message, hostname=targetip)
