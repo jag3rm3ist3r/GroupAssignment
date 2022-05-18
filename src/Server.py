@@ -179,11 +179,6 @@ class SiteLogic():
         
         print("mqtt loop init complete")
 
-# Main object, must be global for Flask to access it.
-# Set argument to true if you would like to retain existing data in table.
-#sl = SiteLogic(True)
-sl = SiteLogic(False)
-
 
 # Function bound to pahoMQTT
 # thisclient : ?
@@ -210,6 +205,12 @@ def on_message(thisclient, userdata, message):
     # Filter for which sensor the data has come from using message.topic.
     # Jam into database.
     # Do some logic to determine whether something should turn on or off.
+
+
+# Main object, must be global for Flask to access it.
+# Set argument to true if you would like to retain existing data in table.
+#sl = SiteLogic(True)
+sl = SiteLogic(False)
 
 
 def main():
