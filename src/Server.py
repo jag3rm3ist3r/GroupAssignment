@@ -149,16 +149,16 @@ class SiteLogic:
     # userdata : ?
     # message : The message that was received.
 
-def on_message(thisclient, userdata, message):
-    # Debug code to display messages as they're received.
-    print(str(message.topic) + " " + str(message.payload))
+    def on_message(thisclient, userdata, message):
+        # Debug code to display messages as they're received.
+        print(str(message.topic) + " " + str(message.payload))
 
-    raise Exception('Received message from rpi! Success!')
+        raise Exception('Received message from rpi! Success!')
 
-    # !!! IMPLEMENT !!!
-    # Filter for which sensor the data has come from using message.topic.
-    # Jam into database.
-    # Do some logic to determine whether something should turn on or off.
+        # !!! IMPLEMENT !!!
+        # Filter for which sensor the data has come from using message.topic.
+        # Jam into database.
+        # Do some logic to determine whether something should turn on or off.
 
     # Time getter
     def getTime(self):
