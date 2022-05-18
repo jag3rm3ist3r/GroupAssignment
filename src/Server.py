@@ -25,9 +25,6 @@ app = Flask(__name__)
 
 # Brains of the Flask website.
 class SiteLogic():
-    # !!! DEBUG CODE !!!
-    # You should only see this print it's name once.
-    print(self)
     # !!! IMPLEMENT !!!
     # Try to make this return "rows" instead of whatever result from execute()
 
@@ -48,6 +45,9 @@ class SiteLogic():
 
     # siteLogic constructor
     def __init__(self, persist):
+        # !!! DEBUG CODE !!!
+        # You should only see this print it's name once.
+        print(self)
         # SQL connection
         self.__conn = psycopg2.connect(
             database="pi",
