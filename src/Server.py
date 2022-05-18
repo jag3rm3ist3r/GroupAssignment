@@ -109,13 +109,16 @@ class SiteLogic():
         for i in range(len(sys.argv)):
             # Make sure we ignore the autopassed 0th argument.
             if i == 0:
-                continue
+                i += 1
 
             # j is the array index and i is the argument index.
             j = i - 1
             # User userdata as the index for if we don't know which client is
             #+calling a function.
-            self.__client[j] = mqttclient.Client(userdata=j)
+            # !!! DEBUG CODE !!!
+            print(i)
+            print(j)
+            self.__client[j] = mqttclient.Client(userdata=str(j))
             self.__client[j].on_connect = self.on_connect
             self.__client[j].on_message = self.on_message
 
