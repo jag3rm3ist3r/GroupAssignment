@@ -4,7 +4,7 @@
 # CLI arguments
 import sys
 # MQTT for communication with the server.
-import paho.mqtt.publish as publish
+import paho.mqtt.publish as mqttpublish
 
 data = {"watered": 0,
         "button": 0,
@@ -41,10 +41,10 @@ def main():
         data["last_update"] = time.ctime(seconds)
 
         # Send data over MQTT.
-        topic = "arduino1"
+        topic = "arduino1/moisture"
         message = "test"
         targetip = sys.argv[2]
-        publish.single(topic, message, hostname=targetip)
+        mqttpublish.single(topic, message, hostname=targetip)
 
 
     # !!! IMPLEMENT !!!

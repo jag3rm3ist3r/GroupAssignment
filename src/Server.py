@@ -15,8 +15,8 @@ from decimal import Decimal
 # Flask for webpage
 from flask import Flask, render_template
 # MQTT for communication with ThingsBoard and both Nodes.
-import paho.mqtt.publish as publish
-import paho.mqtt.client as client
+import paho.mqtt.publish as mqttpublish
+import paho.mqtt.client as mqttclient
 
 
 # Flask init.
@@ -63,7 +63,7 @@ class SiteLogic():
 
         # Flush any garbage in buffer.
         self.__ser.flush()
-        
+
         # Set default values on raspberry pi devices here.
         
         # SQL connection
@@ -114,7 +114,53 @@ class SiteLogic():
             except:
                 pass
             cursor.close()
-        
+
+        # MQTT Client initializaiton.
+        self.__client[]
+        # argv[0]  : this file
+        # argv[1]  : serial device
+        # argv[>1] : ip addresses of nodes
+        # Add a client for every IP passed as an argument.
+        for i in range(2, len(sys.argv)):
+            # User userdata as the index for if we don't know which client is
+            #+calling a function.
+            self.__client[i] = mqttclient.Client(userdata=i-2)
+            self.__client[i].on_connect = self.on_connect
+            self.__client[i].on_message = self.on_message
+
+            # Initialize MQTT connection.
+            # args: host, port, keepalive
+            # !!! IMPLEMENT !!!
+            # Change first argument to the correct address.
+            self.__client[i].connect(sys.argv[i], 1883, 60)
+
+    # Function bound to pahoMQTT
+    # This function should not have "self" as an argument.
+    # thisclient : ?
+    # userdata : ?
+    # flags : ?
+    # rc : Result code
+    def on_connect(thisclient, userdata, flags, rc):
+        print("Connected with result code: " + str(rc))
+        topic = "arduino"
+        # Resub here so it doesn't lose subscriptions on reconnect.
+        thisclient.subscribe(topic)
+
+    # Function bound to pahoMQTT
+    # This function should not have "self" as an argument.
+    # thisclient : ?
+    # userdata : ?
+    # message : The message that was received.
+    def on_message(thisclient, userdata, message):
+        # Debug code to display messages as they're received.
+        print(str(message.topic) + " " + str(message.payload))
+
+        # !!! IMPLEMENT !!!
+        # Filter for which sensor the data has come from using message.topic.
+        # Jam into database.
+        # Do some logic to determine whether something should turn on or off.
+
+
     # Time getter
     def getTime(self):
         return datetime.now().strftime("%H:%M:%S")
@@ -163,47 +209,32 @@ class SiteLogic():
                  'time' : self.getTime(),
                  'average' : self.getDBAverage(100)}
 
-    # Loop for reading serial input from sensors.
-    # size_t delay
-    # Sets time in seconds to wait between taking measurements.
-    # This delay is at the end of the loop so that if it is called from
-    #+another function it will just run once without a delay.
-    # There is no sanity check on this argument as it is hardcoded in.
-    def sensorLoop(self, delay):
-        # !!! IMPLEMENT !!!
-        # 1. Grab some info over MQTT.
-
-        # !!! IMPLEMENT !!!
-        # 2. Jam into database.
-
-        # !!! IMPLEMENT !!!
-        # 3. Do some logic to determine whether something should turn on or off.
-        
-
-        # Periodically check the sensor.
-        time.sleep(delay)
-        
-        return 0
-
+    # Loop for MQTT from sensors.
+    def sensorLoop(self):
+        # Enter MQTT loop.
+        self.__client.loop_forever()
 
 # Main object, must be global for Flask to access it.
 # Set argument to true if you would like to retain existing data in table.
 #sl = SiteLogic(True)
 sl = SiteLogic(False)
-# Keep all the siteLogic stuff in it's own thread but declare it outside
-#+so that flask has access to it.
-# There doesn't seem to be a good way to pass things into flask.
-def initLoop():
-    global sl        
-    while(1):
-        sl.sensorLoop(10)
+
+
+class MQTTLogic():
+    def __init__(self):
+
 
 def main():
+    global sl
     # Run main object in it's own thread.
     # This doesn't run when we create the object because we need to
     #+do some setup first and we need it inside of it's own thread.
     #thread.start_new_thread(sl.sensorLoop, ())
-    slThread = thread.start_new_thread(initLoop, ())
+    slThread = thread.start_new_thread(sl.sensorLoop(), ())
+
+    # !!! IMPLEMENT !!!
+    # Start the MQTT loop in it's own thread if necessary.
+    #mlThread = thread.start_new_thread(somefunc, ())
 
     # IMPLEMENT : If slThread dies then nothing much happens.
     # The application should exit if either of these threads exit.
