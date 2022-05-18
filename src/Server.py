@@ -106,20 +106,21 @@ class SiteLogic():
         # argv[>1] : ip addresses of nodes
         # Add a client for every IP passed as an argument.
         for i in range(len(sys.argv) - 1):
-            # j is the array index and i is the argument index.
-            j = i - 1
+            print(sys.argv[i])
+            # i is the array index and j is the argument index.
+            j = i + 1
             # User userdata as the index for if we don't know which client is
             #+calling a function.
-            self.__client.append(mqttclient.Client(userdata=str(j)))
-            print("Creating MQTT client " + str(i))
-            self.__client[j].on_connect = self.on_connect
-            self.__client[j].on_message = self.on_message
+            self.__client.append(mqttclient.Client(userdata=str(i)))
+            print("Creating MQTT client " + str(j))
+            self.__client[i].on_connect = self.on_connect
+            self.__client[i].on_message = self.on_message
 
             # Initialize MQTT connection.
             port = 1883
-            print("Connecting on " + sys.argv[i] + ":" + str(port))
+            print("Connecting on " + sys.argv[j] + ":" + str(port))
             # args: host, port, keepalive
-            self.__client[j].connect(sys.argv[i], port, 60)
+            self.__client[i].connect(sys.argv[j], port, 60)
 
     # Function bound to pahoMQTT
     # thisclient : ?
