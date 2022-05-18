@@ -213,7 +213,6 @@ class SiteLogic:
 # Main object, must be global for Flask to access it.
 # Set argument to true if you would like to retain existing data in table.
 #sl = SiteLogic(True)
-sl = SiteLogic(False)
 
 
 # index.html file operation
@@ -231,6 +230,7 @@ def main():
 
 
 if __name__ == '__main__':
+    sl = SiteLogic(False)
     # Thank you Mario!
     # But our main() is in another castle. 
     main()
