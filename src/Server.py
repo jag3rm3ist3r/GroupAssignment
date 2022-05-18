@@ -203,7 +203,7 @@ class SiteLogic():
     def sensorLoop(self):
         # Enter MQTT loop.
         for c in self.__client:
-            print("Starting loop " + c)
+            print("Starting loop " + str(c))
             c.loop_start()
         
         print("mqtt loop init complete")
