@@ -16,6 +16,8 @@ from flask import Flask, render_template
 # MQTT for communication with ThingsBoard and both Nodes.
 import paho.mqtt.publish as mqttpublish
 import paho.mqtt.client as mqttclient
+# pdb debugger
+import pdb; pdb.set_trace()
 
 
 # Flask init.
@@ -69,6 +71,9 @@ class SiteLogic():
             "light VARCHAR(20) NOT NULL, " +
             "timestamp VARCHAR(20) NOT NULL);")
         
+        # !!! IMPLEMENT !!!
+        #(id INTEGER PRIMARY KEY NOT NULL, watered INTEGER, button INTEGER, water_level FLOAT, light_level FLOAT, time_record INTEGER)
+
         # Settings table.
         if not (persist):
             self.__execQuery("DROP TABLE IF EXISTS settings;")
@@ -78,6 +83,9 @@ class SiteLogic():
             "(name VARCHAR(22) PRIMARY KEY NOT NULL, " +
             "state VARCHAR(22) NOT NULL);")
         
+        # !!! IMPLEMENT !!!
+        #(id INTEGER PRIMARY KEY, auto_water INTEGER, auto_water_moisture FLOAT, auto_water_light FLOAT)
+
         # Set defaults.
         with self.__conn:
             cursor = self.__conn.cursor()
@@ -197,6 +205,8 @@ def on_connect(thisclient, userdata, flags, rc):
 def on_message(thisclient, userdata, message):
     # Debug code to display messages as they're received.
     print(str(message.topic) + " " + str(message.payload))
+
+    raise Exception('Received message from rpi! Success!')
 
     # !!! IMPLEMENT !!!
     # Filter for which sensor the data has come from using message.topic.
