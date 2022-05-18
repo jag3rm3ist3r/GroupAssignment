@@ -137,7 +137,7 @@ class SiteLogic:
     # rc : Result code
     def on_connect(thisclient, userdata, flags, rc):
         print("Connected with result code: " + str(rc))
-        topic = "arduino"
+        topic = "arduino" + str(userdata)
         # Resub here so it doesn't lose subscriptions on reconnect.
         print(  "Subscribing to " + topic +
                 " on " + str(sys.argv[userdata]) + ".")
