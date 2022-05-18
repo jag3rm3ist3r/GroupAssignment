@@ -105,20 +105,21 @@ class SiteLogic():
         # argv[1]  : serial device
         # argv[>1] : ip addresses of nodes
         # Add a client for every IP passed as an argument.
+        # !!! DEBUG CODE !!!
+        print(self)
         for i in range(len(sys.argv) - 1):
-            print(sys.argv[i])
             # i is the array index and j is the argument index.
             j = i + 1
             # User userdata as the index for if we don't know which client is
             #+calling a function.
             self.__client.append(mqttclient.Client(userdata=str(i)))
-            print("Creating MQTT client " + str(j))
+            print("Creating MQTT client instance " + str(j))
             self.__client[i].on_connect = on_connect
             self.__client[i].on_message = on_message
 
             # Initialize MQTT connection.
             port = 1883
-            print("Connecting on " + sys.argv[j] + ":" + str(port))
+            print("Attempting to connect on " + sys.argv[j] + ":" + str(port))
             # args: host, port, keepalive
             self.__client[i].connect(sys.argv[j], port, 60)
 
@@ -179,6 +180,11 @@ class SiteLogic():
         
         print("mqtt loop init complete")
 
+
+# !!! IMPLEMENT !!!
+# These were in the SiteLogic class before but now they're here to make sure
+#+SiteLogic wasn't breaking them.
+# They probably will need to be moved back.
 
 # Function bound to pahoMQTT
 # thisclient : ?
