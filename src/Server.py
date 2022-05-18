@@ -115,8 +115,8 @@ class SiteLogic:
             #+calling a function.
             self.__client.append(mqttclient.Client(userdata=str(i)))
             print("Creating MQTT client instance " + str(j))
-            self.__client[i].on_connect = on_connect
-            self.__client[i].on_message = on_message
+            self.__client[i].on_connect = self.on_connect
+            self.__client[i].on_message = self.on_message
 
             # Initialize MQTT connection.
             port = 1883
@@ -130,6 +130,35 @@ class SiteLogic:
             self.__client[i].loop_start()
         
         print("mqtt loop init complete")
+
+    # Function bound to pahoMQTT
+    # thisclient : ?
+    # userdata : ?
+    # flags : ?
+    # rc : Result code
+    def on_connect(thisclient, userdata, flags, rc):
+        print("Connected with result code: " + str(rc))
+        topic = "arduino"
+        # Resub here so it doesn't lose subscriptions on reconnect.
+        print(  "Subscribing to " + topic +
+                " on " + str(sys.argv[userdata]) + ".")
+        thisclient.subscribe(topic)
+
+    # Function bound to pahoMQTT
+    # thisclient : ?
+    # userdata : ?
+    # message : The message that was received.
+
+def on_message(thisclient, userdata, message):
+    # Debug code to display messages as they're received.
+    print(str(message.topic) + " " + str(message.payload))
+
+    raise Exception('Received message from rpi! Success!')
+
+    # !!! IMPLEMENT !!!
+    # Filter for which sensor the data has come from using message.topic.
+    # Jam into database.
+    # Do some logic to determine whether something should turn on or off.
 
     # Time getter
     def getTime(self):
@@ -180,38 +209,6 @@ class SiteLogic:
                  'average' : self.getDBAverage(100)}
 
 
-# !!! IMPLEMENT !!!
-# These were in the SiteLogic class before but now they're here to make sure
-#+SiteLogic wasn't breaking them.
-# They probably will need to be moved back.
-
-# Function bound to pahoMQTT
-# thisclient : ?
-# userdata : ?
-# flags : ?
-# rc : Result code
-def on_connect(thisclient, userdata, flags, rc):
-    print("Connected with result code: " + str(rc))
-    topic = "arduino"
-    # Resub here so it doesn't lose subscriptions on reconnect.
-    print(  "Subscribing to " + topic +
-            " on " + str(sys.argv[userdata]) + ".")
-    thisclient.subscribe(topic)
-
-# Function bound to pahoMQTT
-# thisclient : ?
-# userdata : ?
-# message : The message that was received.
-def on_message(thisclient, userdata, message):
-    # Debug code to display messages as they're received.
-    print(str(message.topic) + " " + str(message.payload))
-
-    raise Exception('Received message from rpi! Success!')
-
-    # !!! IMPLEMENT !!!
-    # Filter for which sensor the data has come from using message.topic.
-    # Jam into database.
-    # Do some logic to determine whether something should turn on or off.
 
 
 # Main object, must be global for Flask to access it.
