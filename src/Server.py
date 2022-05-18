@@ -47,6 +47,10 @@ class SiteLogic:
 
     # siteLogic constructor
     def __init__(self, persist):
+        # Hack to stop duplicate instances of this object appearing.
+        if(sl):
+            return None
+
         # !!! DEBUG CODE !!!
         # You should only see this print it's name once.
         print(self)
