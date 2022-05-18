@@ -124,9 +124,9 @@ class SiteLogic():
             self.__client[i].connect(sys.argv[j], port, 60)
 
         # Start MQTT loop(s).
-        for c in self.__client:
-            print("Starting loop " + str(c))
-            c.loop_start()
+        for c in range(self.__client):
+            print("Starting loop " + str(self.__client[c]))
+            self.__client[c].loop_start()
         
         print("mqtt loop init complete")
 
