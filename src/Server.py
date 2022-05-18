@@ -185,7 +185,8 @@ class SiteLogic:
 # rc : Result code
 def on_connect(thisclient, userdata, flags, rc):
     print("Connected with result code: " + str(rc))
-    topic = "arduino" + str(userdata)
+    #topic = "arduino" + str(userdata)
+    topic = "arduino1"
     # Resub here so it doesn't lose subscriptions on reconnect.
     print(  "Subscribing to " + topic +
             " on " + str(sys.argv[userdata]) + ".")
@@ -217,7 +218,7 @@ def index():
 
 
 def main():
-    time.sleep(10)
+    time.sleep(5)
     # Start flask.
     app.run(host='0.0.0.0', port = 80, debug = True, threaded = False, use_reloader=False)
 
