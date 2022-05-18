@@ -1,13 +1,12 @@
 # IOT Assignment RPI python script
 # arg 1 : serial device file
 
-# Must be serial communication to the arduino
-import serial
+#import serial
 import time
 from datetime import datetime
 # postgresql
 import psycopg2
-import thread
+#import thread
 # CLI arguments
 import sys
 # Floating point logic is complete garbage so I'm trying Decimal.
@@ -126,7 +125,6 @@ class SiteLogic():
             self.__client[j].connect(sys.argv[i], port, 60)
 
     # Function bound to pahoMQTT
-    # This function should not have "self" as an argument.
     # thisclient : ?
     # userdata : ?
     # flags : ?
@@ -140,7 +138,6 @@ class SiteLogic():
         thisclient.subscribe(topic)
 
     # Function bound to pahoMQTT
-    # This function should not have "self" as an argument.
     # thisclient : ?
     # userdata : ?
     # message : The message that was received.
@@ -206,8 +203,8 @@ class SiteLogic():
     def sensorLoop(self):
         # Enter MQTT loop.
         for c in self.__client:
-            print("Starting thread " + str(c))
-            thread.start_new_thread(c.loop_forever(), ())
+            print("Starting loop " + c)
+            c.loop_start()
         
         print("mqtt loop init complete")
 
