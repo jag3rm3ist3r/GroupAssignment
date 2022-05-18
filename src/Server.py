@@ -217,7 +217,7 @@ def index():
 
 
 def main():
-    sleep(10)
+    time.sleep(10)
     # Start flask.
     app.run(host='0.0.0.0', port = 80, debug = True, threaded = False, use_reloader=False)
 
