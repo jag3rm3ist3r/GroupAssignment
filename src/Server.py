@@ -121,7 +121,7 @@ class SiteLogic():
 
             # Initialize MQTT connection.
             port = 1883
-            print("Connecting on " + sys.argv[i] + ":" + port)
+            print("Connecting on " + sys.argv[i] + ":" + str(port))
             # args: host, port, keepalive
             self.__client[j].connect(sys.argv[i], port, 60)
 
