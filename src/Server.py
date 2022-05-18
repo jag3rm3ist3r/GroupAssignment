@@ -130,8 +130,6 @@ class SiteLogic:
         
         print("mqtt loop init complete")
 
-
-
     # Time getter
     def getTime(self):
         return datetime.now().strftime("%H:%M:%S")
@@ -219,6 +217,7 @@ def index():
 
 
 def main():
+    delay(10)
     # Start flask.
     app.run(host='0.0.0.0', port = 80, debug = True, threaded = False, use_reloader=False)
 
