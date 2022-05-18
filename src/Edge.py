@@ -22,7 +22,7 @@ def serialDataFiltering(text):
 
     #the string without node1/
     key = text[0]
-
+    #Watered might not need to be here
     if (
             key == "watered" or
             key == "button" or
@@ -47,6 +47,7 @@ def main():
                 serialDataFiltering(text)
 
     # !!! IMPLEMENT !!!
+    
     # Receive MQTT signal to turn pump/LED on and off.
     # (ser.write(b"2"))
 
