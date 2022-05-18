@@ -5,6 +5,7 @@
 import sys
 # MQTT for communication with the server.
 import paho.mqtt.publish as mqttpublish
+import paho.mqtt.client as mqttclient
 
 data = {"watered": 0,
         "button": 0,
