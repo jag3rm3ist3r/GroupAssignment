@@ -1,7 +1,10 @@
+# arg 1 : serial device
+# arg 2 : server address
+
 # CLI arguments
 import sys
 # MQTT for communication with the server.
-import paho.mqtt.client as mqtt
+import paho.mqtt.publish as publish
 
 data = {"watered": 0,
         "button": 0,
@@ -12,6 +15,7 @@ data = {"watered": 0,
 
 
 def main():
+    # Grab serial device (argument 1)
     ser = serial.Serial(sys.argv[1], 9600, timeout = 10)
     ser.flush()
     new_data = False
@@ -36,8 +40,11 @@ def main():
         data["time_record"] = seconds
         data["last_update"] = time.ctime(seconds)
 
-        # !!! IMPLEMENT !!!
-        # Send data over MQTT instead of storing to SQL database.
+        # Send data over MQTT.
+        topic = "arduino1"
+        message = "test"
+        targetip = sys.argv[2]
+        publish.single(topic, message, hostname=targetip)
 
 
     # !!! IMPLEMENT !!!

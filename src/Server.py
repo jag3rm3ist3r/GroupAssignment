@@ -15,7 +15,8 @@ from decimal import Decimal
 # Flask for webpage
 from flask import Flask, render_template
 # MQTT for communication with ThingsBoard and both Nodes.
-import paho.mqtt.client as mqtt
+import paho.mqtt.publish as publish
+import paho.mqtt.client as client
 
 
 # Flask init.
