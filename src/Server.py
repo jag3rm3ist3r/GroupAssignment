@@ -118,10 +118,10 @@ class SiteLogic():
             self.__client[i].on_message = self.on_message
 
             # Initialize MQTT connection.
+            port = 1883
+            print("Connecting on " + sys.argv[i] + ":" + port)
             # args: host, port, keepalive
-            # !!! IMPLEMENT !!!
-            # Change first argument to the correct address.
-            self.__client[i].connect(sys.argv[i], 1883, 60)
+            self.__client[i].connect(sys.argv[i], port, 60)
 
     # Function bound to pahoMQTT
     # This function should not have "self" as an argument.
