@@ -20,10 +20,12 @@ import paho.mqtt.client as mqttclient
 #import pdb; pdb.set_trace()
 
 
+
+
 # Flask init.
 app = Flask(__name__)
 
-stopDupe = False
+
 
 
 # Brains of the Flask website.
@@ -48,15 +50,6 @@ class SiteLogic:
 
     # siteLogic constructor
     def __init__(self, persist):
-        # Hack to stop duplicate instances of this object appearing.
-        global stopDupe
-        if(stopDupe):
-            return None
-        stopDupe = True
-
-        # !!! DEBUG CODE !!!
-        # You should only see this print it's name once.
-        print(self)
         # SQL connection
         self.__conn = psycopg2.connect(
             database="pi",
@@ -226,7 +219,7 @@ sl = SiteLogic(False)
 # index.html file operation
 @app.route("/")
 def index():
-    global sl
+    #global sl
     # This data will be sent to index.html
     templateData = sl.getTemplateData()
     return render_template('index.html', **templateData)
