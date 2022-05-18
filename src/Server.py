@@ -23,6 +23,7 @@ import paho.mqtt.client as mqttclient
 # Flask init.
 app = Flask(__name__)
 
+stopDupe = False
 
 
 # Brains of the Flask website.
@@ -48,8 +49,10 @@ class SiteLogic:
     # siteLogic constructor
     def __init__(self, persist):
         # Hack to stop duplicate instances of this object appearing.
-        if(sl):
+        global stopDupe
+        if(stopDupe):
             return None
+        stopDupe = True
 
         # !!! DEBUG CODE !!!
         # You should only see this print it's name once.
