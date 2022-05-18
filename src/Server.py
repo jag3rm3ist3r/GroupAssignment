@@ -105,11 +105,7 @@ class SiteLogic():
         # argv[1]  : serial device
         # argv[>1] : ip addresses of nodes
         # Add a client for every IP passed as an argument.
-        for i in range(len(sys.argv)):
-            # Make sure we ignore the autopassed 0th argument.
-            if i == 0:
-                continue
-
+        for i in range(len(sys.argv) - 1):
             # j is the array index and i is the argument index.
             j = i - 1
             # User userdata as the index for if we don't know which client is
