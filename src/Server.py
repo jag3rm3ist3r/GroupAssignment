@@ -148,7 +148,6 @@ class SiteLogic:
     # thisclient : ?
     # userdata : ?
     # message : The message that was received.
-
     def on_message(thisclient, userdata, message):
         # Debug code to display messages as they're received.
         print(str(message.topic) + " " + str(message.payload))
