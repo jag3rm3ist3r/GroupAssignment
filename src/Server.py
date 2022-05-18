@@ -201,7 +201,7 @@ def on_message(thisclient, userdata, message):
     # Debug code to display messages as they're received.
     #print(str(message.topic) + " " + str(message.payload))
 
-    raise Exception('Received message from rpi! Success!')
+    print("message rec.")
 
     # !!! IMPLEMENT !!!
     # Filter for which sensor the data has come from using message.topic.
