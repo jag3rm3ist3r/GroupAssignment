@@ -20,20 +20,22 @@ import paho.mqtt.client as mqttclient
 #import pdb; pdb.set_trace()
 
 
+
+
 # Flask init.
 app = Flask(__name__)
 
 
 
+
 # Brains of the Flask website.
-class SiteLogic():
+class SiteLogic:
     # !!! IMPLEMENT !!!
     # Try to make this return "rows" instead of whatever result from execute()
 
     # Generic function for executing queries that
     #+don't require much any extra interaction.
     def __execQuery(self, query):
-        global conn
         result = None
         
         with self.__conn:
@@ -47,9 +49,6 @@ class SiteLogic():
 
     # siteLogic constructor
     def __init__(self, persist):
-        # !!! DEBUG CODE !!!
-        # You should only see this print it's name once.
-        print(self)
         # SQL connection
         self.__conn = psycopg2.connect(
             database="pi",
@@ -109,14 +108,14 @@ class SiteLogic():
         # argv[>1] : ip addresses of nodes
         # Add a client for every IP passed as an argument.
         for i in range(len(sys.argv) - 1):
-            # i is the array index and j is the argument index.
+            # i is the array index and j is the sys.argv index.
             j = i + 1
             # User userdata as the index for if we don't know which client is
             #+calling a function.
             self.__client.append(mqttclient.Client(userdata=str(i)))
             print("Creating MQTT client instance " + str(j))
-            self.__client[i].on_connect = on_connect
-            self.__client[i].on_message = on_message
+            self.__client[i].on_connect = self.on_connect
+            self.__client[i].on_message = self.on_message
 
             # Initialize MQTT connection.
             port = 1883
@@ -130,6 +129,34 @@ class SiteLogic():
             self.__client[i].loop_start()
         
         print("mqtt loop init complete")
+
+    # Function bound to pahoMQTT
+    # thisclient : ?
+    # userdata : ?
+    # flags : ?
+    # rc : Result code
+    def on_connect(thisclient, userdata, flags, rc):
+        print("Connected with result code: " + str(rc))
+        topic = "arduino"
+        # Resub here so it doesn't lose subscriptions on reconnect.
+        print(  "Subscribing to " + topic +
+                " on " + str(sys.argv[userdata]) + ".")
+        thisclient.subscribe(topic)
+
+    # Function bound to pahoMQTT
+    # thisclient : ?
+    # userdata : ?
+    # message : The message that was received.
+    def on_message(thisclient, userdata, message):
+        # Debug code to display messages as they're received.
+        print(str(message.topic) + " " + str(message.payload))
+
+        raise Exception('Received message from rpi! Success!')
+
+        # !!! IMPLEMENT !!!
+        # Filter for which sensor the data has come from using message.topic.
+        # Jam into database.
+        # Do some logic to determine whether something should turn on or off.
 
     # Time getter
     def getTime(self):
@@ -180,50 +207,10 @@ class SiteLogic():
                  'average' : self.getDBAverage(100)}
 
 
-# !!! IMPLEMENT !!!
-# These were in the SiteLogic class before but now they're here to make sure
-#+SiteLogic wasn't breaking them.
-# They probably will need to be moved back.
-
-# Function bound to pahoMQTT
-# thisclient : ?
-# userdata : ?
-# flags : ?
-# rc : Result code
-def on_connect(thisclient, userdata, flags, rc):
-    print("Connected with result code: " + str(rc))
-    topic = "arduino"
-    # Resub here so it doesn't lose subscriptions on reconnect.
-    print(  "Subscribing to " + topic +
-            " on " + str(sys.argv[userdata]) + ".")
-    thisclient.subscribe(topic)
-
-# Function bound to pahoMQTT
-# thisclient : ?
-# userdata : ?
-# message : The message that was received.
-def on_message(thisclient, userdata, message):
-    # Debug code to display messages as they're received.
-    print(str(message.topic) + " " + str(message.payload))
-
-    raise Exception('Received message from rpi! Success!')
-
-    # !!! IMPLEMENT !!!
-    # Filter for which sensor the data has come from using message.topic.
-    # Jam into database.
-    # Do some logic to determine whether something should turn on or off.
-
-
-# Main object, must be global for Flask to access it.
-# Set argument to true if you would like to retain existing data in table.
-#sl = SiteLogic(True)
-sl = SiteLogic(False)
-
-
 # index.html file operation
 @app.route("/")
 def index():
-    global sl
+    #global sl
     # This data will be sent to index.html
     templateData = sl.getTemplateData()
     return render_template('index.html', **templateData)
@@ -235,6 +222,9 @@ def main():
 
 
 if __name__ == '__main__':
+    #global sl
+    # Set argument to true if you would like to retain existing data in table.
+    sl = SiteLogic(False)
     # Thank you Mario!
     # But our main() is in another castle. 
     main()
