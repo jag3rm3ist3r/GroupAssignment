@@ -24,17 +24,17 @@ node1 = {"watered": 0,
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code " + str(rc))
     #arg 3 is edge id
-    client.subscribe(sys.arg[3] + "/#")
+    client.subscribe(sys.argv[3] + "/#")
 
 #topics are pump and light
 #send serial instructions to node for pump or led
 def on_message(client, userdata, msg):
-    if (msg.topic == (sys.arg[3] + "/pump")):
-        print "pump"
-        ser.write(b"1")
-    if (msg.topic == (sys.arg[3] + "/led")
-        ser.write(b"2")
-        print "led"
+    if (msg.topic == (sys.argv[3] + "/pump")):
+        print("pump")
+        userdata['ser'].write(b"1")
+    if (msg.topic == (sys.argv[3] + "/led")):
+        userdata['ser'].write(b"2")
+        print ("led")
 
 #hostname is sender ip
 def sendData(topic, message):
@@ -61,9 +61,12 @@ def main():
     # Grab serial device (argument 1)
     ser = serial.Serial(sys.argv[1], 9600, timeout = 10)
     ser.flush()
-
-    client = mqtt.Client()
+    
+    #pass serial as user data
+    client_userdata = {'ser':ser}
+    client = mqttclient.Client(userdata=client_userdata)
     client.on_connect = on_connect
+    client.connect(sys.argv[4], 1883, 60)
     #non-blocking loop (runs on background thread)
     client.loop_start()
 
@@ -79,6 +82,7 @@ def main():
 
     # Receive MQTT signal to turn pump/LED on and off.
     # (ser.write(b"2"))
+        
         client.on_message = on_message
 
 if __name__ == '__main__':
