@@ -187,7 +187,7 @@ def on_connect(thisclient, userdata, flags, rc):
     #topic = "arduino1" 
     # Resub here so it doesn't lose subscriptions on reconnect.
     #print(  "Subscribing to " + topic + " on " + str(sys.argv[userdata]) + ".")
-    print("Attempting subscription.")
+    print("Attempting subscription to " + topic + ".")
     thisclient.subscribe(topic)
     print("Subscribed.")
 
