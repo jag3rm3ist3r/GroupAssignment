@@ -214,12 +214,16 @@ def index():
 
 
 def main():
-    # This delay is here so the messages don't get mixed up.
+    # This delay is here so init messages don't get mixed up with flask ones.
     time.sleep(5)
+
     # Start flask.
-    #app.run(host='0.0.0.0', port = 80, debug = True, threaded = False, use_reloader=False)
-    while(1):
-        pass
+    app.run(
+        host = '0.0.0.0',
+        port = 80,
+        debug = True,
+        threaded = False,
+        use_reloader=False)
 
 
 if __name__ == '__main__':
