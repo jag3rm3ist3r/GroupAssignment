@@ -54,7 +54,7 @@ def serialDataFiltering(text):
             key == "light_level"
         ):
         #send the correct node's data directly
-        topic = f"{sys.argv[3]}/{key}"
+        topic = f"server{sys.argv[3]}/{key}"
         sendData(topic, text[1])
 
 def main():
