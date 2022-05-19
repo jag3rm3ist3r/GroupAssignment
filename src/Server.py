@@ -181,21 +181,21 @@ class SiteLogic:
 # userdata : ?
 # flags : ?
 # rc : Result code
-def on_connect(client, userdata, flags, rc):
+def on_connect(thisclient, userdata, flags, rc):
     print("Connected with result code: " + str(rc))
     #topic = "arduino" + str(userdata)
     topic = "arduino1"
     # Resub here so it doesn't lose subscriptions on reconnect.
     #print(  "Subscribing to " + topic + " on " + str(sys.argv[userdata]) + ".")
     print("Attempting subscription.")
-    client.subscribe(topic)
+    thisclient.subscribe(topic)
     print("Subscribed.")
 
 # Function bound to pahoMQTT
 # thisclient : ?
 # userdata : ?
 # message : The message that was received.
-def on_message(client, userdata, message):
+def on_message(thisclient, userdata, message):
     # Debug code to display messages as they're received.
     print(str(message.topic) + " " + str(message.payload))
 
