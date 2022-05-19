@@ -54,7 +54,7 @@ def serialDataFiltering(text):
             key == "light_level"
         ):
         #send the correct node's data directly
-        topic = f"{key}"
+        topic = f"{sys.argv[3]}/{key}"
         sendData(topic, text[1])
 
 def main():
@@ -77,8 +77,6 @@ def main():
             text = ser.readline().decode('utf-8').strip().split(" = ")
             #data coming in will have node name in front (ex: node1/)
             serialDataFiltering(text)
-
-    # !!! IMPLEMENT !!!
 
     # Receive MQTT signal to turn pump/LED on and off.
     # (ser.write(b"2"))
