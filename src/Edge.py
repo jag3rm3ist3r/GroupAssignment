@@ -32,6 +32,7 @@ def on_message(client, userdata, msg):
     if (msg.topic == (sys.arg[3] + "/pump")):
         print "pump"
         ser.write(b"1")
+    # !!! FIX !!! This is malformed, I think the left bracket is wrong?
     if (msg.topic == (sys.arg[3] + "/led")
         ser.write(b"2")
         print "led"
