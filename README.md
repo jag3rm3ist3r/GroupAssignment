@@ -53,16 +53,25 @@ CloudServer --> ThingsBoard : MQTT
 classDiagram
 class Edge1
 class Edge2
-class Edge3
 class Server
+class ThingsBoard
 
-Edge1 <--> Server
-Edge2 <--> Server
-Edge3 <--> Server
+Edge1 --> Server : server1
+Edge2 --> Server : server2
 
-Edge1 : subscribed to edge1
-Edge2 : subscribed to edge2
-Edge3 : subscribed to edge3
+Server --> Edge1 : edge1
+Server --> Edge2 : edge2
 
-Server : Subscribed to server1
+Edge1 : Subscribed to topic edge1
+Edge2 : Subscribed to topic edge2
+
+Server : Subscribed to topic server1
+Server : Subscribed to topic server2
+
+Edge1 : Publishes to topic server1
+Edge2 : Publishes to topic server2
+
+Server --> ThingsBoard : tbd
+
+ThingsBoard : Subscribed to tbd
 ```
