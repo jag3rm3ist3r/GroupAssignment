@@ -21,6 +21,8 @@ Moisture1 : sensor
 Moisture2 : sensor
 Light1 : sensor
 Light2 : sensor
+Button1 : sensor
+Button 2 : sensor
 CloudServer : SQL Server
 CloudServer : Website
 CloudServer : Weather API
