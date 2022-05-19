@@ -103,25 +103,23 @@ class SiteLogic:
 
         # MQTT Client initializaiton.
         self.__client = []
-        # argv[0]  : this file
-        # argv[1]  : serial device
-        # argv[>1] : ip addresses of nodes
+        # argv[0] : this file
+        # argv[1] : ammount of instances
+        # argv[2] : ip address of this computer
         # Add a client for every IP passed as an argument.
-        for i in range(len(sys.argv) - 1):
-            # i is the array index and j is the sys.argv index.
-            j = i + 1
+        for i in range(int(sys.argv[1])):
             # User userdata as the index for if we don't know which client is
             #+calling a function.
             self.__client.append(mqttclient.Client(userdata=str(i)))
-            print("Creating MQTT client instance " + str(j))
+            print("Creating MQTT client instance " + str(i))
             self.__client[i].on_connect = on_connect
             self.__client[i].on_message = on_message
 
             # Initialize MQTT connection.
             port = 1883
-            print("Attempting to connect on " + sys.argv[j] + ":" + str(port))
+            print("Attempting to connect on " + sys.argv[2] + ":" + str(port))
             # args: host, port, keepalive
-            self.__client[i].connect(sys.argv[j], port, 60)
+            self.__client[i].connect(sys.argv[2], port, 60)
 
         # Start MQTT loop(s).
         for i in range(len(self.__client)):
@@ -199,9 +197,7 @@ def on_connect(client, userdata, flags, rc):
 # message : The message that was received.
 def on_message(client, userdata, message):
     # Debug code to display messages as they're received.
-    #print(str(message.topic) + " " + str(message.payload))
-
-    print("message rec.")
+    print(str(message.topic) + " " + str(message.payload))
 
     # !!! IMPLEMENT !!!
     # Filter for which sensor the data has come from using message.topic.
