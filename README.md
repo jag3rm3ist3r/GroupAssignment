@@ -1,5 +1,7 @@
 # IOT Group Assignment 
 
+## System Diagram
+
 ```mermaid
 classDiagram
 
@@ -43,4 +45,24 @@ Raspberry2 --> CloudServer : MQTT
 ThirdPartyAPI --> CloudServer : Weather
 CloudServer --> ThingsBoard : MQTT
 
+```
+
+## Communication Diagram
+
+```mermaid
+classDiagram
+class Edge1
+class Edge2
+class Edge3
+class Server
+
+Edge1 <--> Server
+Edge2 <--> Server
+Edge3 <--> Server
+
+Edge1 : subscribed to edge1
+Edge2 : subscribed to edge2
+Edge3 : subscribed to edge3
+
+Server : Subscribed to server1
 ```
