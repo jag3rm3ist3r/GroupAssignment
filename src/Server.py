@@ -183,6 +183,8 @@ class SiteLogic:
 # rc : Result code
 def on_connect(thisclient, userdata, flags, rc):
     print("Connected with result code: " + str(rc))
+    # Subscribe to arduino[number]/#
+    # # : denotes wildcard
     topic = "arduino" + str(userdata) + "/#"
     #topic = "arduino1" 
     # Resub here so it doesn't lose subscriptions on reconnect.
