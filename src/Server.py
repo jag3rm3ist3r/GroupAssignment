@@ -186,12 +186,12 @@ class SiteLogic:
 
     # Getter for DB moisture target.
     def getDBTargetMoist(self, edgeId):
-        result = self.__execQuery(
+        return self.__execQuery(
             "SELECT state FROM settings " +
             "WHERE name='target_moisture' "
             "AND edgeId='" + edgeId + "';"
         )
-        return result
+        #return result
 
     # Setter for DB moisture target.
     def setDBTargetMoist(self, edgeId, state):
@@ -249,35 +249,35 @@ class SiteLogic:
 
     # Getter for most recent # DB moisture readings.
     def getDBRecMoist(self, ammount):
-        result = self._execQuery(
+        return self.__execQuery(
             "SELECT timestamp, source, state FROM moisture " +
             "ORDER BY readingId DESC LIMIT " + str(ammount) + ";"
         )
-        return result
+        #return result
     
     # Getter for most recent # DB light readings.
     def getDBRecLight(self, ammount):
-        result = self.__execQuery(
+        return self.__execQuery(
             "SELECT timestamp, source, state FROM light " +
             "ORDER BY readingId DESC LIMIT " + str(ammount) + ";"
         )
-        return result
+        #return result
 
     # Getter for average of last # DB moisture readings.
     def getDBAveMoist(self, ammount):
-        result = self.__execQuery(
+        return self.__execQuery(
             "SELECT AVG(state) FROM moisture " +
             "ORDER BY readingId DESC LIMIT " + str(ammount) + ";"
         )
-        return result
+        #return result
 
     # Getter for average of last # DB light readings.
     def getDBAveLight(self, ammount):
-        result = self.__execQuery(
+        return self.__execQuery(
             "SELECT AVG(state) FROM light " +
             "ORDER BY readingId DESC LIMIT " + str(ammount) + ";"
         )
-        return result
+        #return result
     
     # Template data getter
     # I am aware that using separate functions to make multiple
