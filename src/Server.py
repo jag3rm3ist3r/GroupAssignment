@@ -265,16 +265,16 @@ class SiteLogic:
     # Getter for average of last # DB moisture readings.
     def getDBAveMoist(self, ammount):
         return self.__execQuery(
-            "SELECT AVG(state) FROM moisture AS t " +
-            "GROUP BY t.readingId LIMIT " + str(ammount) + ";"
+            "SELECT AVG(state) FROM moisture " +
+            "GROUP BY state LIMIT " + str(ammount) + ";"
         )
         #return result
 
     # Getter for average of last # DB light readings.
     def getDBAveLight(self, ammount):
         return self.__execQuery(
-            "SELECT AVG(state) FROM light AS t " +
-            "GROUP BY t.readingId LIMIT " + str(ammount) + ";"
+            "SELECT AVG(state) FROM light " +
+            "GROUP BY state LIMIT " + str(ammount) + ";"
         )
         #return result
     
