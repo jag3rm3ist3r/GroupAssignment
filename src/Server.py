@@ -63,12 +63,12 @@ class SiteLogic:
             self.__execQuery("DROP TABLE IF EXISTS statistics;")
         
         # Data table.
-        self.__execQuery(
-            "CREATE TABLE IF NOT EXISTS statistics(" +
-            "readingId SERIAL PRIMARY KEY NOT NULL, " +
-            "moisture VARCHAR(20) NOT NULL, " +
-            "light VARCHAR(20) NOT NULL, " +
-            "timestamp VARCHAR(20) NOT NULL);")
+        #self.__execQuery(
+            #"CREATE TABLE IF NOT EXISTS statistics(" +
+            #"readingId SERIAL PRIMARY KEY NOT NULL, " +
+            #"moisture VARCHAR(20) NOT NULL, " +
+            #"light VARCHAR(20) NOT NULL, " +
+            #"timestamp VARCHAR(20) NOT NULL);")
         
         # !!! IMPLEMENT !!!
         #(id INTEGER PRIMARY KEY NOT NULL, watered INTEGER, button INTEGER, water_level FLOAT, light_level FLOAT, time_record INTEGER)
@@ -77,10 +77,10 @@ class SiteLogic:
         if not (persist):
             self.__execQuery("DROP TABLE IF EXISTS settings;")
 
-        self.__execQuery(
-            "CREATE TABLE IF NOT EXISTS settings" +
-            "(name VARCHAR(22) PRIMARY KEY NOT NULL, " +
-            "state VARCHAR(22) NOT NULL);")
+        #self.__execQuery(
+            #"CREATE TABLE IF NOT EXISTS settings" +
+            #"(name VARCHAR(22) PRIMARY KEY NOT NULL, " +
+            #"state VARCHAR(22) NOT NULL);")
         
         # !!! IMPLEMENT !!!
         #(id INTEGER PRIMARY KEY, auto_water INTEGER, auto_water_moisture FLOAT, auto_water_light FLOAT)
@@ -216,6 +216,10 @@ def index():
 
 
 def main():
+    #global sl
+    # Set argument to true if you would like to retain existing data in table.
+    sl = SiteLogic(False)
+
     # This delay is here so init messages don't get mixed up with flask ones.
     time.sleep(5)
 
@@ -229,9 +233,6 @@ def main():
 
 
 if __name__ == '__main__':
-    #global sl
-    # Set argument to true if you would like to retain existing data in table.
-    sl = SiteLogic(False)
     # Thank you Mario!
     # But our main() is in another castle. 
     main()
