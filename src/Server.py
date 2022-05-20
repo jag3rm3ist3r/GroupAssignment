@@ -299,18 +299,15 @@ def on_message(thisclient, userdata, message):
     source = topicSplit[0][4]
 
     # Check what the topic is, store information in that table.
-    switch(topicSplit[1]):
-        case "water_level":
-            setDBMoisture(source, message.payload)
-            break
-        case "light_level":
-            setDBLight(source, message.payload)
-            break
-        case "button":
-            setDBButton(source, message.payload)
-            break
-        default:
-            break
+    # Sadly match - case was introduced in a later version of python.
+    if(topicSplit[1] == "water_level"):
+        setDBMoisture(source, message.payload)
+
+    if(topicSplit[1] == "light_level"):
+        setDBLight(source, message.payload)
+
+    if(topicSplit[1] == "button"):
+        setDBButton(source, message.payload)
 
 
 # index.html file operation
