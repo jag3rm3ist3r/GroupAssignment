@@ -134,8 +134,8 @@ class SiteLogic:
             #+calling a function.
             self.__client.append(mqttclient.Client(userdata=str(i)))
             print("Creating MQTT client instance " + str(i))
-            self.__client[i].on_connect = self.on_connect
-            self.__client[i].on_message = self.on_message
+            self.__client[i].on_connect = on_connect
+            self.__client[i].on_message = on_message
 
             # Initialize MQTT connection.
             port = 1883
@@ -149,31 +149,6 @@ class SiteLogic:
             self.__client[i].loop_start()
         
         print("mqtt loop init complete")
-
-    # Function bound to pahoMQTT
-    # thisclient : ?
-    # userdata : ?
-    # flags : ?
-    # rc : Result code
-    def on_connect(thisclient, userdata, flags, rc):
-        print("Connected with result code: " + str(rc))
-        # Subscribe to arduino[number]/#
-        # # : denotes wildcard
-        topic = "arduino" + str(userdata) + "/#"
-        #topic = "arduino1" 
-        # Resub here so it doesn't lose subscriptions on reconnect.
-        #print(  "Subscribing to " + topic + " on " + str(sys.argv[userdata]) + ".")
-        print("Attempting subscription to " + topic + ".")
-        thisclient.subscribe(topic)
-        print("Subscribed.")
-
-    # Function bound to pahoMQTT
-    # thisclient : ?
-    # userdata : ?
-    # message : The message that was received.
-    def on_message(thisclient, userdata, message):
-        # Debug code to display messages as they're received.
-        print(str(message.topic) + " " + str(message.payload))
 
     # !!! IMPLEMENT !!!
     # Filter for which sensor the data has come from using message.topic.
@@ -234,6 +209,33 @@ class SiteLogic:
             'averagelight' : self.getDBAveLight(100)
         }
 
+
+# Function bound to pahoMQTT
+# thisclient : ?
+# userdata : ?
+# flags : ?
+# rc : Result code
+def on_connect(thisclient, userdata, flags, rc):
+    global sl
+    print("Connected with result code: " + str(rc))
+    # Subscribe to arduino[number]/#
+    # # : denotes wildcard
+    topic = "arduino" + str(userdata) + "/#"
+    #topic = "arduino1" 
+    # Resub here so it doesn't lose subscriptions on reconnect.
+    #print(  "Subscribing to " + topic + " on " + str(sys.argv[userdata]) + ".")
+    print("Attempting subscription to " + topic + ".")
+    thisclient.subscribe(topic)
+    print("Subscribed.")
+
+# Function bound to pahoMQTT
+# thisclient : ?
+# userdata : ?
+# message : The message that was received.
+def on_message(thisclient, userdata, message):
+    global sl
+    # Debug code to display messages as they're received.
+    print(str(message.topic) + " " + str(message.payload))
 
 
 # index.html file operation
