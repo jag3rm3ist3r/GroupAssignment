@@ -30,7 +30,7 @@ import json
 # Flask init.
 app = Flask(__name__)
 
-EDGE_COUNT=sys.argv[1]
+EDGE_COUNT=int(sys.argv[1])
 HOSTNAME=sys.argv[2]
 EDGE_NUMBERING_OFFSET = 1
 WEATHER_URL = "https://api.open-meteo.com/v1/forecast?latitude=-37.840&longitude=144.946&daily=precipitation_sum&timezone=Australia%2FSydney"
