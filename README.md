@@ -68,8 +68,8 @@ Edge2 : Subscribed to topic edge2
 Server : Subscribed to topic server1
 Server : Subscribed to topic server2
 
-Edge1 : Publishes to topic server1
-Edge2 : Publishes to topic server2
+Edge1 : Publishes to topic edge1
+Edge2 : Publishes to topic edge2
 
 Server --> ThingsBoard : tbd
 
