@@ -30,6 +30,7 @@ import json
 # Flask init.
 app = Flask(__name__)
 
+# Global constants
 EDGE_COUNT=int(sys.argv[1])
 HOSTNAME=sys.argv[2]
 EDGE_NUMBERING_OFFSET = 1
@@ -185,9 +186,19 @@ class SiteLogic:
 
     # Getter for DB moisture target.
     def getDBTargetMoist(self, edgeId):
-        return self.__execQuery(
+        result = self.__execQuery(
             "SELECT state FROM settings " +
             "WHERE name='target_moisture' "
+            "AND edgeId='" + edgeId + "';"
+        )
+        return result
+
+    # Setter for DB moisture target.
+    def setDBTargetMoist(self, edgeId, state):
+        self.__execQuery(
+            "UPDATE settings SET " +
+            "state='" + state + "' " +
+            "WHERE name='target_moisture' " +
             "AND edgeId='" + edgeId + "';"
         )
 
@@ -238,31 +249,35 @@ class SiteLogic:
 
     # Getter for most recent # DB moisture readings.
     def getDBRecMoist(self, ammount):
-        return self._execQuery(
+        result = self._execQuery(
             "SELECT timestamp, source, state FROM moisture " +
             "ORDER BY readingId DESC LIMIT " + str(ammount) + ";"
         )
+        return result
     
     # Getter for most recent # DB light readings.
     def getDBRecLight(self, ammount):
-        return self.__execQuery(
+        result = self.__execQuery(
             "SELECT timestamp, source, state FROM light " +
             "ORDER BY readingId DESC LIMIT " + str(ammount) + ";"
         )
+        return result
 
     # Getter for average of last # DB moisture readings.
     def getDBAveMoist(self, ammount):
-        return self.__execQuery(
+        result = self.__execQuery(
             "SELECT AVG(state) FROM moisture " +
             "ORDER BY readingId DESC LIMIT " + str(ammount) + ";"
         )
+        return result
 
     # Getter for average of last # DB light readings.
     def getDBAveLight(self, ammount):
-        return self.__execQuery(
+        result = self.__execQuery(
             "SELECT AVG(state) FROM light " +
             "ORDER BY readingId DESC LIMIT " + str(ammount) + ";"
         )
+        return result
     
     # Template data getter
     # I am aware that using separate functions to make multiple
