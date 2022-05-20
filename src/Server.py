@@ -76,13 +76,12 @@ class SiteLogic:
         if not (persist):
             self.__execQuery("DROP TABLE IF EXISTS moisture;")
 
-        # Data table.
         self.__execQuery(
             "CREATE TABLE IF NOT EXISTS moisture(" +
             "readingId SERIAL PRIMARY KEY NOT NULL, " +
             "timestamp VARCHAR(20) NOT NULL," +
             "source VARCHAR(20) NOT NULL," +
-            "state VARCHAR(20) NOT NULL);"
+            "state INT NOT NULL);"
         )
 
         # LIGHT
@@ -95,7 +94,7 @@ class SiteLogic:
             "readingId SERIAL PRIMARY KEY NOT NULL, " +
             "timestamp VARCHAR(20) NOT NULL," +
             "source VARCHAR(20) NOT NULL," +
-            "state VARCHAR(20) NOT NULL);"
+            "state INT NOT NULL);"
         )
 
         # BUTTON
