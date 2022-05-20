@@ -35,6 +35,8 @@ class SiteLogic:
     # Generic function for executing queries that
     #+don't require much any extra interaction.
     def __execQuery(self, query):
+        # !!! DEBUG !!!
+        print(query)
         rows = None
         
         with self.__conn:
@@ -312,15 +314,15 @@ def on_message(thisclient, userdata, message):
     # Check what the topic is, store information in that table.
     # Sadly match - case was introduced in a later version of python.
     if(topicSplit[1] == "water_level"):
-        print("Logging moisture : " + message.payload)
+        #print("Logging moisture : " + message.payload)
         sl.setDBMoisture(source, message.payload)
 
     if(topicSplit[1] == "light_level"):
-        print("Logging light level : " + message.payload)
+        #print("Logging light level : " + message.payload)
         sl.setDBLight(source, message.payload)
 
     if(topicSplit[1] == "button"):
-        print("Logging button press : " + message.payload)
+        #print("Logging button press : " + message.payload)
         sl.setDBButton(source, message.payload)
 
 
