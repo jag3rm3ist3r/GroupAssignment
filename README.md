@@ -1,4 +1,4 @@
-# IOT Group Assignment 
+# IOT Group Assignment
 
 ## System Diagram
 
