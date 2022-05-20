@@ -205,7 +205,7 @@ class SiteLogic:
         # Buffer result.
         result = __execQuery(
             "SELECT state FROM water " +
-            "ORDER BY readingId DESC LIMIT 2;
+            "ORDER BY readingId DESC LIMIT 2;"
         )
         # Only return first row.
         return result[0]
@@ -214,7 +214,7 @@ class SiteLogic:
     def getDBLight(self):
         result = __execQuery(
             "SELECT state FROM light " +
-            "ORDER BY readingId DESC LIMIT 2;
+            "ORDER BY readingId DESC LIMIT 2;"
         )
         return result[0]
 
