@@ -39,7 +39,7 @@ class SiteLogic:
         
         with self.__conn:
             cursor = self.__conn.cursor()
-            result = cursor.execute(query)
+            cursor.execute(query)
             self.__conn.commit()
             # Sometimes this will complain that there are no rows, ignore it.
             try:
@@ -299,6 +299,7 @@ def on_message(thisclient, userdata, message):
 
     # !!! DEBUG CODE !!!
     # Debug code to display messages as they're received.
+    '''
     print("")
     print("DEBUG on_message debug info")
     print("message.topic : " + str(message.topic))
@@ -306,23 +307,21 @@ def on_message(thisclient, userdata, message):
     print("topicSplit[0] : " + str(topicSplit[0]))
     print("topicSplit[1] : " + str(topicSplit[1]))
     print("source : " + str(source))
-
+    '''
 
     # Check what the topic is, store information in that table.
     # Sadly match - case was introduced in a later version of python.
     if(topicSplit[1] == "water_level"):
-        print("Logging moisture.")
+        print("Logging moisture : " + message.payload)
         sl.setDBMoisture(source, message.payload)
 
     if(topicSplit[1] == "light_level"):
-        print("Logging light level.")
+        print("Logging light level : " + message.payload)
         sl.setDBLight(source, message.payload)
 
     if(topicSplit[1] == "button"):
-        print("Logging button press.")
+        print("Logging button press : " + message.payload)
         sl.setDBButton(source, message.payload)
-
-    print("")
 
 
 # index.html file operation
