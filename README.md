@@ -59,23 +59,24 @@ class Edge2
 class Server
 class ThingsBoard
 
-Edge1 --> Server : edge1/data
-Edge2 --> Server : edge2/data
+Edge1 --> Server : edge1data
+Edge2 --> Server : edge2data
 
-Server --> Edge1 : edge1/actions
-Server --> Edge2 : edge2/actions
+Server --> Edge1 : edge1actions
+Server --> Edge2 : edge2actions
 
-Edge1 : Subscribed to topic edge1
-Edge2 : Subscribed to topic edge2
+Edge1 : Subscribed to topic edge1actions
+Edge2 : Subscribed to topic edge2actions
 
-Server : Subscribed to topic edge1
-Server : Subscribed to topic edge2
+Server : Subscribed to topic edge1data
+Server : Subscribed to topic edge2data
 
-Edge1 : Publishes to topic edge1
-Edge2 : Publishes to topic edge2
+Edge1 : Publishes to topic edge1data
+Edge2 : Publishes to topic edge2data
 
-Server : Publishes to topic edge1
-Server : Publishes to topic edge2
+Server : Publishes to topic edge1actions
+Server : Publishes to topic edge2actions
+Server : Publishes to topic tbd
 
 Server --> ThingsBoard : tbd
 
