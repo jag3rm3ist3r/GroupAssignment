@@ -179,7 +179,7 @@ class SiteLogic:
     # Setter for DB moisture readings.
     def setDBMoisture(self, source, moisture):
         self.__execQuery(
-            "INSERT INTO moisture VALUES('" +
+            "INSERT INTO moisture (timestamp, source, state) VALUES('" +
             self.getTime() + "', '" +
             str(source) + "', '" +
             str(moisture) + "');"
@@ -188,7 +188,7 @@ class SiteLogic:
     # Setter for DB light readings.
     def setDBLight(self, source, light):
         self.__execQuery(
-            "INSERT INTO light VALUES('" +
+            "INSERT INTO light (timestamp, source, state) VALUES('" +
             self.getTime() + "', '" +
             str(source) + "', '" +
             str(light) + "');"
@@ -197,7 +197,7 @@ class SiteLogic:
     # Setter for DB moisture readings.
     def setDBButton(self, source, state):
         self.__execQuery(
-            "INSERT INTO button VALUES('" +
+            "INSERT INTO button (timestamp, source, state) VALUES('" +
             self.getTime() + "', '" +
             str(source) + "', '" +
             str(state) + "');"
