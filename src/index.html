@@ -41,10 +41,28 @@
 		{% endfor %}
 		</table>
 				<table>
-			<th></th><th>Average</th><th>Average</th>
+			<th></th><th></th><th>Average</th>
 			<tr style="background-color: #FFFFFF;">
 				<td></td>
+				<td></td>
 				<td>{{ averagemoist }}</td>
+			</tr>
+		</table>
+		<table>
+		<th>Timestamp</th><th>Source</th><th>Light</th>
+		{% for row in recentlight %}
+			<tr>
+				<td>{{ row[0] }}</td>
+				<td>{{ row[1] }}</td>
+				<td>{{ row[2] }}</td>
+			</tr>
+		{% endfor %}
+		</table>
+				<table>
+			<th></th><th></th><th>Average</th>
+			<tr style="background-color: #FFFFFF;">
+				<td></td>
+				<td></td>
 				<td>{{ averagelight }}</td>
 			</tr>
 		</table>
