@@ -36,7 +36,7 @@ class SiteLogic:
     # Generic function for executing queries that
     #+don't require much any extra interaction.
     def __execQuery(self, query):
-        result = None
+        rows = None
         
         with self.__conn:
             cursor = self.__conn.cursor()
