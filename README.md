@@ -49,6 +49,9 @@ CloudServer --> ThingsBoard : MQTT
 
 ## Communication Diagram
 
+(actions: pump, led)
+(data: button, water_level, light_level)
+
 ```mermaid
 classDiagram
 class Edge1
@@ -56,11 +59,11 @@ class Edge2
 class Server
 class ThingsBoard
 
-Edge1 --> Server : edge1
-Edge2 --> Server : edge2
+Edge1 --> Server : edge1/data
+Edge2 --> Server : edge2/data
 
-Server --> Edge1 : edge1
-Server --> Edge2 : edge2
+Server --> Edge1 : edge1/actions
+Server --> Edge2 : edge2/actions
 
 Edge1 : Subscribed to topic edge1
 Edge2 : Subscribed to topic edge2
@@ -70,6 +73,9 @@ Server : Subscribed to topic edge2
 
 Edge1 : Publishes to topic edge1
 Edge2 : Publishes to topic edge2
+
+Server : Publishes to topic edge1
+Server : Publishes to topic edge2
 
 Server --> ThingsBoard : tbd
 
