@@ -335,14 +335,14 @@ def on_message(thisclient, userdata, message):
 # index.html file operation
 @app.route("/")
 def index():
-    #global sl
+    global sl
     # This data will be sent to index.html
     templateData = sl.getTemplateData()
     return render_template('index.html', **templateData)
 
 
 def main():
-    #global sl
+    global sl
     # Set argument to true if you would like to retain existing data in table.
     sl = SiteLogic(False)
     # Setup MQTT, which relies on sl being defined first.
