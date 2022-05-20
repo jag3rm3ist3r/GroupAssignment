@@ -32,9 +32,6 @@ app = Flask(__name__)
 
 # Brains of the Flask website.
 class SiteLogic:
-    # !!! IMPLEMENT !!!
-    # Try to make this return "rows" instead of whatever result from execute()
-
     # Generic function for executing queries that
     #+don't require much any extra interaction.
     def __execQuery(self, query):
@@ -158,35 +155,25 @@ class SiteLogic:
         
         print("mqtt init loop complete")
 
-    # !!! IMPLEMENT !!!
-    # Filter for which sensor the data has come from using message.topic.
-    # Jam into database.
-    # Do some logic to determine whether something should turn on or off.
     # Time getter
     def getTime(self):
         return datetime.now().strftime("%H:%M:%S")
 
+    # Setter for DB edge count.
     def setDBEdgeCount(self, count):
         __execQuery(
             "UPDATE settings SET state='" + str(count) +
             "' WHERE name='edge_count';"
         )
     
+    # Getter for DB edge count.
     def getDBEdgeCount(self):
         return __execQuery(
             "SELECT state FROM settings " +
             "WHERE name='edge_count';"
         )
 
-    # !!! FIX !!!
-    # THIS IS BROKEN DUE TO DATABASE CHANGES.
-    # Most recent readings DB getter.
-    def getDBRecent(self, ammount):
-        query =  "SELECT timestamp, moisture, light FROM statistics "
-        query += "ORDER BY readingId DESC LIMIT " + str(ammount) + ";"
-
-        return __execQuery(query)
-
+    # Setter for DB moisture readings.
     def setDBMoisture(self, source, moisture):
         __execQuery(
             "INSERT INTO moisture VALUES('" +
@@ -195,6 +182,7 @@ class SiteLogic:
             str(moisture) + "');"
         )
     
+    # Setter for DB light readings.
     def setDBLight(self, source, light):
         __execQuery(
             "INSERT INTO light VALUES('" +
@@ -203,6 +191,7 @@ class SiteLogic:
             str(light) + "');"
         )
 
+    # Setter for DB moisture readings.
     def setDBButton(self, source, state):
         __execQuery(
             "INSERT INTO button VALUES('" +
@@ -211,24 +200,46 @@ class SiteLogic:
             str(state) + "');"
         )
 
+    # Getter for most recent DB moisture reading.
+    def getDBMoisture(self):
+        # Buffer result.
+        result = __execQuery(
+            "SELECT state FROM water " +
+            "ORDER BY readingId DESC LIMIT 2;
+        )
+        # Only return first row.
+        return result[0]
+
+    # Getter for most recent DB light reading.
+    def getDBLight(self):
+        result = __execQuery(
+            "SELECT state FROM light " +
+            "ORDER BY readingId DESC LIMIT 2;
+        )
+        return result[0]
+
+    # Getter for most recent # DB moisture readings.
     def getDBRecMoist(self, ammount):
         return __execQuery(
             "SELECT timestamp, source, state FROM water " +
             "ORDER BY readingId DESC LIMIT " + str(ammount) + ";"
         )
     
+    # Getter for most recent # DB light readings.
     def getDBRecLight(self, ammount):
         return __execQuery(
             "SELECT timestamp, source, state FROM light " +
             "ORDER BY readingId DESC LIMIT " str(ammount) + ";"
         )
 
+    # Getter for average of last # DB moisture readings.
     def getDBAveMoist(self, ammount):
         return __execQuery(
             "SELECT AVG(state) FROM water " +
             "ORDER BY readingId DESC LIMIT " + str(ammount) + ";"
         )
 
+    # Getter for average of last # DB light readings.
     def getDBAveLight(self, ammount):
         return __execQuery(
             "SELECT AVG(state) FROM light " +
