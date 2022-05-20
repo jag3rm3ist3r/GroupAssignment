@@ -301,13 +301,13 @@ def on_message(thisclient, userdata, message):
     # Check what the topic is, store information in that table.
     # Sadly match - case was introduced in a later version of python.
     if(topicSplit[1] == "water_level"):
-        setDBMoisture(source, message.payload)
+        sl.setDBMoisture(source, message.payload)
 
     if(topicSplit[1] == "light_level"):
-        setDBLight(source, message.payload)
+        sl.setDBLight(source, message.payload)
 
     if(topicSplit[1] == "button"):
-        setDBButton(source, message.payload)
+        sl.setDBButton(source, message.payload)
 
 
 # index.html file operation
