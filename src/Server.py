@@ -61,14 +61,14 @@ class SiteLogic:
             host = "127.0.0.1",
             port = "5432")
         
-        # WATER
+        # MOISTURE
         # Clear old database entries.
         if not (persist):
-            self.__execQuery("DROP TABLE IF EXISTS water;")
+            self.__execQuery("DROP TABLE IF EXISTS moisture;")
 
         # Data table.
         self.__execQuery(
-            "CREATE TABLE IF NOT EXISTS water(" +
+            "CREATE TABLE IF NOT EXISTS moisture(" +
             "readingId SERIAL PRIMARY KEY NOT NULL, " +
             "timestamp VARCHAR(20) NOT NULL," +
             "source VARCHAR(20) NOT NULL," +
@@ -205,7 +205,7 @@ class SiteLogic:
     def getDBMoisture(self):
         # Buffer result.
         result = self.__execQuery(
-            "SELECT state FROM water " +
+            "SELECT state FROM moisture " +
             "ORDER BY readingId DESC LIMIT 2;"
         )
         # Only return first row.
@@ -222,7 +222,7 @@ class SiteLogic:
     # Getter for most recent # DB moisture readings.
     def getDBRecMoist(self, ammount):
         return self._execQuery(
-            "SELECT timestamp, source, state FROM water " +
+            "SELECT timestamp, source, state FROM moisture " +
             "ORDER BY readingId DESC LIMIT " + str(ammount) + ";"
         )
     
@@ -236,7 +236,7 @@ class SiteLogic:
     # Getter for average of last # DB moisture readings.
     def getDBAveMoist(self, ammount):
         return self.__execQuery(
-            "SELECT AVG(state) FROM water " +
+            "SELECT AVG(state) FROM moisture " +
             "ORDER BY readingId DESC LIMIT " + str(ammount) + ";"
         )
 
