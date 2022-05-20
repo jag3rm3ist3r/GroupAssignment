@@ -126,7 +126,7 @@ class SiteLogic:
                 pass
             cursor.close()
 
-    def initMQTT()
+    def initMQTT():
         # MQTT Client initializaiton.
         self.__client = []
         # argv[0] : this file
