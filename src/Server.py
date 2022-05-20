@@ -18,6 +18,9 @@ from flask import Flask, render_template
 # MQTT for communication with ThingsBoard and both Nodes.
 import paho.mqtt.publish as mqttpublish
 import paho.mqtt.client as mqttclient
+# Required for weather.
+import requests
+import json
 # pdb debugger
 #import pdb; pdb.set_trace()
 
@@ -27,6 +30,10 @@ import paho.mqtt.client as mqttclient
 # Flask init.
 app = Flask(__name__)
 
+EDGE_COUNT=sys.argv[1]
+HOSTNAME=sys.argv[2]
+EDGE_NUMBERING_OFFSET = 1
+WEATHER_URL = "https://api.open-meteo.com/v1/forecast?latitude=-37.840&longitude=144.946&daily=precipitation_sum&timezone=Australia%2FSydney"
 
 
 
@@ -110,32 +117,24 @@ class SiteLogic:
         self.__execQuery(
             "CREATE TABLE IF NOT EXISTS settings" +
             "(name VARCHAR(22) PRIMARY KEY NOT NULL, " +
-            "state VARCHAR(22) NOT NULL);"
+            "state VARCHAR(22) NOT NULL,"
+            "edgeId VARCHAR(22));"
         )
-        
-        # Set defaults.
-        with self.__conn:
-            cursor = self.__conn.cursor()
-            #This is wrapped in a try because it will fail when
-            #+persistence is turned on and we don't really care as long as it
-            #+exists.
-            try:
-                cursor.execute(
-                    "INSERT INTO settings VALUES('edge_count', '0');"
-                )
-                self.__conn.commit()
-            except:
-                pass
-            cursor.close()
+
+        # Go get the latest weather.
+        self.updateAPIWeather()
 
     def initMQTT(self):
+        global EDGE_NUMBERING_OFFSET
+        global HOSTNAME
+        global EDGE_COUNT
         # MQTT Client initializaiton.
         self.__client = []
         # argv[0] : this file
         # argv[1] : ammount of instances
         # argv[2] : ip address of this computer
         # Add a client for every IP passed as an argument.
-        for i in range(int(sys.argv[1])):
+        for i in range(int(EDGE_COUNT)):
             # User userdata as the index for if we don't know which client is
             #+calling a function.
             self.__client.append(mqttclient.Client(userdata=str(i)))
@@ -145,35 +144,51 @@ class SiteLogic:
 
             # Initialize MQTT connection.
             port = 1883
-            print("Attempting to connect on " + sys.argv[2] + ":" + str(port))
+            print("Attempting to connect on " + HOSTNAME + ":" + str(port))
             # args: host, port, keepalive
-            self.__client[i].connect(sys.argv[2], port, 60)
+            self.__client[i].connect(HOSTNAME, port, 60)
 
         # Start MQTT loop(s).
         for i in range(len(self.__client)):
             print("Starting loop " + str(self.__client[i]))
             self.__client[i].loop_start()
         
-        self.setDBEdgeCount(len(self.__client))
-        
+        # Little sanity check.
+        assert len(self.__client) == EDGE_COUNT
+                
+        # Set defaults for settings table.
+        # This is done here since we don't know how many edge devices there are
+        #+up until this point.
+        with self.__conn:
+            cursor = self.__conn.cursor()
+            #This is wrapped in a try because it will fail when
+            #+persistence is turned on and we don't really care as long as it
+            #+exists.
+            try:
+                for i in range(len(self.__client)):
+                    # Changes what number we start counting from.
+                    j = i + EDGE_NUMBERING_OFFSET
+                    cursor.execute(
+                        "INSERT INTO settings VALUES(" +
+                        "'target_moisture', '0', '" + j + "');"
+                    )
+                    self.__conn.commit()
+            except:
+                pass
+            cursor.close()
+
         print("mqtt init loop complete")
 
     # Time getter
     def getTime(self):
         return datetime.now().strftime("%H:%M:%S")
 
-    # Setter for DB edge count.
-    def setDBEdgeCount(self, count):
-        self.__execQuery(
-            "UPDATE settings SET state='" + str(count) +
-            "' WHERE name='edge_count';"
-        )
-    
-    # Getter for DB edge count.
-    def getDBEdgeCount(self):
+    # Getter for DB moisture target.
+    def getDBTargetMoist(self, edgeId):
         return self.__execQuery(
             "SELECT state FROM settings " +
-            "WHERE name='edge_count';"
+            "WHERE name='target_moisture' "
+            "AND edgeId='" + edgeId + "';"
         )
 
     # Setter for DB moisture readings.
@@ -262,6 +277,25 @@ class SiteLogic:
             'averagemoist' : self.getDBAveMoist(100),
             'averagelight' : self.getDBAveLight(100)
         }
+    
+    # Fetch new weather data.
+    def updateAPIWeather(self):
+        global WEATHER_URL
+
+        self.request = requests.get(WEATHER_URL, timeout=5)
+        self.weather = json.loads(self.request.content)
+
+    # Returns an array where rain[0] is today's rain in mm and rain[1] is
+    #+tomorrow etc.
+    def getAPIWeatherRain(self):
+        return self.weather['daily']['precipitation_sum']
+    
+    # Supply water to the specified plant.
+    def supplyWater(self, client):
+        global HOSTNAME
+        topic = "edge" + str(client) + "actions/pump"
+        payload = "THIS IS IGNORED."
+        mqttpublish.single(topic, payload, hostname=HOSTNAME)
 
 
 # Function bound to pahoMQTT
@@ -324,6 +358,20 @@ def on_message(thisclient, userdata, message):
     if(topicSplit[1] == "button"):
         #print("Logging button press : " + message.payload)
         sl.setDBButton(source, message.payload)
+    
+    needsWater = False
+    willRain = False
+    # Check if the plant needs water.
+    if(sl.getDBAveMoist(20) < sl.getDBTargetMoist(source)):
+        needsWater = True
+
+    # Check if there will be enough water today to water the plant.
+    if(sl.getAPIWeatherRain()[0] < 2):
+        willRain = True
+    
+    # Supply water if needed.
+    if(needsWater == True and willRain == False):
+        sl.setWater(source)
 
 
 # index.html file operation

@@ -105,5 +105,9 @@ class button {
     source
     state
 }
-class settings
+class settings {
+    name
+    state
+    edgeId
+}
 ```
