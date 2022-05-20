@@ -191,13 +191,13 @@ class SiteLogic:
     def setDBMoisture(self, moisture):
         __execQuery(
             "INSERT INTO moisture VALUES('" +
-            getTime() + "', '" moisture + "');"
+            getTime() + "', '" + moisture + "');"
         )
     
     def setDBLight(self, light):
         __execQuery(
             "INSERT INTO light VALUES('" +
-            getTime() + "', '" light + "');"
+            getTime() + "', '" + light + "');"
         )
 
     # !!! IMPLEMENT !!!
