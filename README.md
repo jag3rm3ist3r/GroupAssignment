@@ -90,16 +90,19 @@ classDiagram
 class water {
     readingId
     timestamp
-    moisture
+    source
+    state
 }
 class light {
     readingId
     timestamp
-    light
+    source
+    state
 }
 class button {
     readingId
     timestamp
+    source
     state
 }
 class settings

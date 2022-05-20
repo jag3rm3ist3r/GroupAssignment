@@ -9,6 +9,8 @@ import psycopg2
 #import thread
 # CLI arguments
 import sys
+# regex
+#import re
 # Floating point logic is complete garbage so I'm trying Decimal.
 from decimal import Decimal
 # Flask for webpage
@@ -62,7 +64,7 @@ class SiteLogic:
             host = "127.0.0.1",
             port = "5432")
         
-
+        # WATER
         # Clear old database entries.
         if not (persist):
             self.__execQuery("DROP TABLE IF EXISTS water;")
@@ -72,9 +74,11 @@ class SiteLogic:
             "CREATE TABLE IF NOT EXISTS water(" +
             "readingId SERIAL PRIMARY KEY NOT NULL, " +
             "timestamp VARCHAR(20) NOT NULL," +
-            "moisture VARCHAR(20) NOT NULL);"
+            "source VARCHAR(20) NOT NULL," +
+            "state VARCHAR(20) NOT NULL);"
         )
 
+        # LIGHT
         # Clear old database entries.
         if not (persist):
             self.__execQuery("DROP TABLE IF EXISTS light;")
@@ -83,9 +87,11 @@ class SiteLogic:
             "CREATE TABLE IF NOT EXISTS light("
             "readingId SERIAL PRIMARY KEY NOT NULL, " +
             "timestamp VARCHAR(20) NOT NULL," +
-            "light VARCHAR(20) NOT NULL);"
+            "source VARCHAR(20) NOT NULL," +
+            "state VARCHAR(20) NOT NULL);"
         )
 
+        # BUTTON
         # Clear old database entries.
         if not (persist):
             self.__execQuery("DROP TABLE IF EXISTS button;")
@@ -94,7 +100,8 @@ class SiteLogic:
             "CREATE TABLE IF NOT EXISTS button("
             "readingId SERIAL PRIMARY KEY NOT NULL, " +
             "timestamp VARCHAR(20) NOT NULL," +
-            "state VARCHAR(20) NOT NULL);"
+            "source VARCHAR(20) NOT NULL," +
+            "state BOOLEAN NOT NULL);"
         )
 
         # Settings table.
@@ -108,20 +115,19 @@ class SiteLogic:
         #)
         
         # Set defaults.
-        #with self.__conn:
-            #cursor = self.__conn.cursor()
-            # This is wrapped in a try because it will fail when
-            #+persistence is turned on and we don't really care as long as it
-            #+exists.
-            #try:
-                #cursor.execute(
-                    #"INSERT INTO settings VALUES('target', '25.00');" +
-                    #"INSERT INTO settings VALUES('power', '0');" +
-                    #"INSERT INTO settings VALUES('heating', '0');")
-                #self.__conn.commit()
-            #except:
-                #pass
-            #cursor.close()
+        with self.__conn:
+            cursor = self.__conn.cursor()
+             This is wrapped in a try because it will fail when
+            +persistence is turned on and we don't really care as long as it
+            +exists.
+            try:
+                cursor.execute(
+                    "INSERT INTO settings VALUES('edge_count', '0');"
+                )
+                self.__conn.commit()
+            except:
+                pass
+            cursor.close()
 
         # MQTT Client initializaiton.
         self.__client = []
@@ -148,7 +154,9 @@ class SiteLogic:
             print("Starting loop " + str(self.__client[i]))
             self.__client[i].loop_start()
         
-        print("mqtt loop init complete")
+        setDBEdgeCount(len(self.__client))
+        
+        print("mqtt init loop complete")
 
     # !!! IMPLEMENT !!!
     # Filter for which sensor the data has come from using message.topic.
@@ -157,6 +165,18 @@ class SiteLogic:
     # Time getter
     def getTime(self):
         return datetime.now().strftime("%H:%M:%S")
+
+    def setDBEdgeCount(self, count):
+        __execQuery(
+            "UPDATE settings SET state='" + str(count) +
+            "' WHERE name='edge_count';"
+        )
+    
+    def getDBEdgeCount(self):
+        return __execQuery(
+            "SELECT state FROM settings " +
+            "WHERE name='edge_count';"
+        )
 
     # !!! FIX !!!
     # THIS IS BROKEN DUE TO DATABASE CHANGES.
@@ -167,33 +187,53 @@ class SiteLogic:
 
         return __execQuery(query)
 
-    def setDBMoisture(self, moisture):
+    def setDBMoisture(self, source, moisture):
         __execQuery(
             "INSERT INTO moisture VALUES('" +
-            getTime() + "', '" + moisture + "');"
+            getTime() + "', '" +
+            str(source) + "', '" +
+            str(moisture) + "');"
         )
     
-    def setDBLight(self, light):
+    def setDBLight(self, source, light):
         __execQuery(
             "INSERT INTO light VALUES('" +
-            getTime() + "', '" + light + "');"
+            getTime() + "', '" +
+            str(source) + "', '" +
+            str(light) + "');"
         )
 
-    # !!! IMPLEMENT !!!
+    def setDBButton(self, source, state):
+        __execQuery(
+            "INSERT INTO button VALUES('" +
+            getTime() + "', '" +
+            str(source) + "', '" +
+            str(state) + "');"
+        )
+
     def getDBRecMoist(self, ammount):
-        pass
+        return __execQuery(
+            "SELECT timestamp, source, state FROM water " +
+            "ORDER BY readingId DESC LIMIT " + str(ammount) + ";"
+        )
     
-    # !!! IMPLEMENT !!!
     def getDBRecLight(self, ammount):
-        pass
+        return __execQuery(
+            "SELECT timestamp, source, state FROM light " +
+            "ORDER BY readingId DESC LIMIT " str(ammount) + ";"
+        )
 
-    # !!! IMPLEMENT !!!
     def getDBAveMoist(self, ammount):
-        pass
+        return __execQuery(
+            "SELECT AVG(state) FROM water " +
+            "ORDER BY readingId DESC LIMIT " + str(ammount) + ";"
+        )
 
-    # !!! IMPLEMENT !!!
     def getDBAveLight(self, ammount):
-        pass
+        return __execQuery(
+            "SELECT AVG(state) FROM light " +
+            "ORDER BY readingId DESC LIMIT " + str(ammount) + ";"
+        )
     
     # Template data getter
     # I am aware that using separate functions to make multiple
@@ -234,6 +274,32 @@ def on_message(thisclient, userdata, message):
     global sl
     # Debug code to display messages as they're received.
     print(str(message.topic) + " " + str(message.payload))
+
+    # Create an array of the topic sections.
+    topicSplit = message.topic.split("/")
+    # Get 5th character of first section of topic.
+    #
+    # edge#data
+    #     ^
+    # 012345678
+    #
+    # This is the number of the edge device.
+    # This number may not correspond to the index it is stored at on this end.
+    source = topicSplit[0][4]
+
+    # Check what the topic is, store information in that table.
+    switch(topicSplit[1]):
+        case "water_level":
+            setDBMoisture(source, message.payload)
+            break
+        case "light_level":
+            setDBLight(source, message.payload)
+            break
+        case "button":
+            setDBButton(source, message.payload)
+            break
+        default:
+            break
 
 
 # index.html file operation
