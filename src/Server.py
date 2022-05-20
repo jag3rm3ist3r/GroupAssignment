@@ -284,8 +284,6 @@ def on_connect(thisclient, userdata, flags, rc):
 # message : The message that was received.
 def on_message(thisclient, userdata, message):
     global sl
-    # Debug code to display messages as they're received.
-    print(str(message.topic) + " " + str(message.payload))
 
     # Create an array of the topic sections.
     topicSplit = message.topic.split("/")
@@ -298,6 +296,18 @@ def on_message(thisclient, userdata, message):
     # This is the number of the edge device.
     # This number may not correspond to the index it is stored at on this end.
     source = topicSplit[0][4]
+
+    # !!! DEBUG CODE !!!
+    # Debug code to display messages as they're received.
+    print("")
+    print("DEBUG on_message debug info")
+    print("message.topic : " + str(message.topic))
+    print("message.payload : " + str(message.payload))
+    print("topicSplit[0] : " + str(topicSplit[0]))
+    print("topicSplit[1] : " + str(topicSplit[1]))
+    print("source : " + str(source))
+    print("")
+
 
     # Check what the topic is, store information in that table.
     # Sadly match - case was introduced in a later version of python.
