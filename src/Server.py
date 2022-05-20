@@ -126,6 +126,7 @@ class SiteLogic:
                 pass
             cursor.close()
 
+    def initMQTT()
         # MQTT Client initializaiton.
         self.__client = []
         # argv[0] : this file
@@ -323,6 +324,8 @@ def main():
     #global sl
     # Set argument to true if you would like to retain existing data in table.
     sl = SiteLogic(False)
+    # Setup MQTT, which relies on sl being defined first.
+    sl.initMQTT()
 
     # This delay is here so init messages don't get mixed up with flask ones.
     time.sleep(5)
