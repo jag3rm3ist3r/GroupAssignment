@@ -126,7 +126,7 @@ class SiteLogic:
                 pass
             cursor.close()
 
-    def initMQTT():
+    def initMQTT(self):
         # MQTT Client initializaiton.
         self.__client = []
         # argv[0] : this file
@@ -162,41 +162,41 @@ class SiteLogic:
 
     # Setter for DB edge count.
     def setDBEdgeCount(self, count):
-        __execQuery(
+        self.__execQuery(
             "UPDATE settings SET state='" + str(count) +
             "' WHERE name='edge_count';"
         )
     
     # Getter for DB edge count.
     def getDBEdgeCount(self):
-        return __execQuery(
+        return self.__execQuery(
             "SELECT state FROM settings " +
             "WHERE name='edge_count';"
         )
 
     # Setter for DB moisture readings.
     def setDBMoisture(self, source, moisture):
-        __execQuery(
+        self.__execQuery(
             "INSERT INTO moisture VALUES('" +
-            getTime() + "', '" +
+            self.getTime() + "', '" +
             str(source) + "', '" +
             str(moisture) + "');"
         )
     
     # Setter for DB light readings.
     def setDBLight(self, source, light):
-        __execQuery(
+        self.__execQuery(
             "INSERT INTO light VALUES('" +
-            getTime() + "', '" +
+            self.getTime() + "', '" +
             str(source) + "', '" +
             str(light) + "');"
         )
 
     # Setter for DB moisture readings.
     def setDBButton(self, source, state):
-        __execQuery(
+        self.__execQuery(
             "INSERT INTO button VALUES('" +
-            getTime() + "', '" +
+            self.getTime() + "', '" +
             str(source) + "', '" +
             str(state) + "');"
         )
@@ -204,7 +204,7 @@ class SiteLogic:
     # Getter for most recent DB moisture reading.
     def getDBMoisture(self):
         # Buffer result.
-        result = __execQuery(
+        result = self.__execQuery(
             "SELECT state FROM water " +
             "ORDER BY readingId DESC LIMIT 2;"
         )
@@ -213,7 +213,7 @@ class SiteLogic:
 
     # Getter for most recent DB light reading.
     def getDBLight(self):
-        result = __execQuery(
+        result = self.__execQuery(
             "SELECT state FROM light " +
             "ORDER BY readingId DESC LIMIT 2;"
         )
@@ -221,28 +221,28 @@ class SiteLogic:
 
     # Getter for most recent # DB moisture readings.
     def getDBRecMoist(self, ammount):
-        return __execQuery(
+        return self._execQuery(
             "SELECT timestamp, source, state FROM water " +
             "ORDER BY readingId DESC LIMIT " + str(ammount) + ";"
         )
     
     # Getter for most recent # DB light readings.
     def getDBRecLight(self, ammount):
-        return __execQuery(
+        return self.__execQuery(
             "SELECT timestamp, source, state FROM light " +
             "ORDER BY readingId DESC LIMIT " + str(ammount) + ";"
         )
 
     # Getter for average of last # DB moisture readings.
     def getDBAveMoist(self, ammount):
-        return __execQuery(
+        return self.__execQuery(
             "SELECT AVG(state) FROM water " +
             "ORDER BY readingId DESC LIMIT " + str(ammount) + ";"
         )
 
     # Getter for average of last # DB light readings.
     def getDBAveLight(self, ammount):
-        return __execQuery(
+        return self.__execQuery(
             "SELECT AVG(state) FROM light " +
             "ORDER BY readingId DESC LIMIT " + str(ammount) + ";"
         )
