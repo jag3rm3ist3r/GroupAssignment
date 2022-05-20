@@ -267,7 +267,7 @@ class SiteLogic:
         return self.__execQuery(
             "SELECT AVG(state) FROM moisture " +
             "GROUP BY state LIMIT " + str(ammount) + ";"
-        )
+        )[0]
         #return result
 
     # Getter for average of last # DB light readings.
@@ -275,7 +275,7 @@ class SiteLogic:
         return self.__execQuery(
             "SELECT AVG(state) FROM light " +
             "GROUP BY state LIMIT " + str(ammount) + ";"
-        )
+        )[0]
         #return result
     
     # Template data getter
