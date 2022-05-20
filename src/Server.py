@@ -42,7 +42,11 @@ class SiteLogic:
             cursor = self.__conn.cursor()
             result = cursor.execute(query)
             self.__conn.commit()
-            rows = cursor.fetchall()
+            # Sometimes this will complain that there are no rows, ignore it.
+            try:
+                rows = cursor.fetchall()
+            except:
+                pass
             cursor.close()
         
         return rows
