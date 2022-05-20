@@ -218,12 +218,10 @@ class SiteLogic:
 def on_connect(thisclient, userdata, flags, rc):
     global sl
     print("Connected with result code: " + str(rc))
-    # Subscribe to arduino[number]/#
+    # Subscribe to edge[number]data/#
     # # : denotes wildcard
-    topic = "arduino" + str(userdata) + "/#"
-    #topic = "arduino1" 
+    topic = "edge" + str(userdata) + "data/#"
     # Resub here so it doesn't lose subscriptions on reconnect.
-    #print(  "Subscribing to " + topic + " on " + str(sys.argv[userdata]) + ".")
     print("Attempting subscription to " + topic + ".")
     thisclient.subscribe(topic)
     print("Subscribed.")
