@@ -262,6 +262,8 @@ class SiteLogic:
         )
         #return result
 
+    # !!! IMPLEMENT !!!
+    # Take edgeId as argument to select which data set to draw from.
     # Getter for average of last # DB moisture readings.
     def getDBAveMoist(self, ammount):
         return self.__execQuery(
@@ -270,6 +272,8 @@ class SiteLogic:
         )[0]
         #return result
 
+    # !!! IMPLEMENT !!!
+    # Take edgeId as argument to select which data set to draw from.
     # Getter for average of last # DB light readings.
     def getDBAveLight(self, ammount):
         return self.__execQuery(
@@ -386,7 +390,7 @@ def on_message(thisclient, userdata, message):
     
     # Supply water if needed.
     if(needsWater == True and willRain == False):
-        sl.setWater(source)
+        sl.supplyWater(source)
 
 
 # index.html file operation

@@ -29,7 +29,7 @@
 		</br></br></br>
 		
 		<h2>Sensor reading history</h2>		
-		<!-- Table containing recent sensor data from SQL database. -->
+		<!-- Table containing recent moisture data from SQL database. -->
 		<table>
 		<th>Timestamp</th><th>Source</th><th>Soil Moisture</th>
 		{% for row in recentmoist %}
@@ -48,6 +48,7 @@
 				<td>{{ averagemoist }}</td>
 			</tr>
 		</table>
+		<!-- Table containing recent light data from SQL database. -->
 		<table>
 		<th>Timestamp</th><th>Source</th><th>Light</th>
 		{% for row in recentlight %}
