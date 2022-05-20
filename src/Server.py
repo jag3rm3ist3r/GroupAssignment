@@ -102,14 +102,14 @@ class SiteLogic:
         )
 
         # Settings table.
-        #if not (persist):
-            #self.__execQuery("DROP TABLE IF EXISTS settings;")
+        if not (persist):
+            self.__execQuery("DROP TABLE IF EXISTS settings;")
 
-        #self.__execQuery(
-            #"CREATE TABLE IF NOT EXISTS settings" +
-            #"(name VARCHAR(22) PRIMARY KEY NOT NULL, " +
-            #"state VARCHAR(22) NOT NULL);"
-        #)
+        self.__execQuery(
+            "CREATE TABLE IF NOT EXISTS settings" +
+            "(name VARCHAR(22) PRIMARY KEY NOT NULL, " +
+            "state VARCHAR(22) NOT NULL);"
+        )
         
         # Set defaults.
         with self.__conn:
