@@ -36,7 +36,7 @@ class SiteLogic:
     #+don't require much any extra interaction.
     def __execQuery(self, query):
         # !!! DEBUG !!!
-        print(query)
+        #print(query)
         rows = None
         
         with self.__conn:
@@ -178,8 +178,6 @@ class SiteLogic:
 
     # Setter for DB moisture readings.
     def setDBMoisture(self, source, state):
-        print(source)
-        print(state)
         self.__execQuery(
             "INSERT INTO moisture (timestamp, source, state) VALUES('" +
             self.getTime() + "', '" +
@@ -189,8 +187,6 @@ class SiteLogic:
     
     # Setter for DB light readings.
     def setDBLight(self, source, state):
-        print(source)
-        print(state)
         self.__execQuery(
             "INSERT INTO light (timestamp, source, state) VALUES('" +
             self.getTime() + "', '" +
@@ -200,8 +196,6 @@ class SiteLogic:
 
     # Setter for DB moisture readings.
     def setDBButton(self, source, state):
-        print(source)
-        print(state)
         self.__execQuery(
             "INSERT INTO button (timestamp, source, state) VALUES('" +
             self.getTime() + "', '" +
