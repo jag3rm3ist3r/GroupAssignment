@@ -265,16 +265,16 @@ class SiteLogic:
     # Getter for average of last # DB moisture readings.
     def getDBAveMoist(self, ammount):
         return self.__execQuery(
-            "SELECT AVG(state) FROM moisture " +
-            "ORDER BY readingId DESC LIMIT " + str(ammount) + ";"
+            "SELECT AVG(state) FROM moisture AS t " +
+            "GROUP BY t.readingId LIMIT " + str(ammount) + ";"
         )
         #return result
 
     # Getter for average of last # DB light readings.
     def getDBAveLight(self, ammount):
         return self.__execQuery(
-            "SELECT AVG(state) FROM light " +
-            "ORDER BY readingId DESC LIMIT " + str(ammount) + ";"
+            "SELECT AVG(state) FROM light AS t " +
+            "GROUP BY t.readingId LIMIT " + str(ammount) + ";"
         )
         #return result
     
@@ -337,6 +337,7 @@ def on_message(thisclient, userdata, message):
 
     # Create an array of the topic sections.
     topicSplit = message.topic.split("/")
+
     # Get 5th character of first section of topic.
     #
     # edge#data
