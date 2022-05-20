@@ -40,12 +40,12 @@ class SiteLogic:
         with self.__conn:
             cursor = self.__conn.cursor()
             cursor.execute(query)
-            self.__conn.commit()
             # Sometimes this will complain that there are no rows, ignore it.
             try:
                 rows = cursor.fetchall()
             except:
                 pass
+            self.__conn.commit()
             cursor.close()
         
         return rows
