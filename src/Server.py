@@ -42,9 +42,10 @@ class SiteLogic:
             cursor = self.__conn.cursor()
             result = cursor.execute(query)
             self.__conn.commit()
+            rows = cursor.fetchall()
             cursor.close()
         
-        return result
+        return rows
             
 
     # siteLogic constructor
@@ -60,46 +61,63 @@ class SiteLogic:
 
         # Clear old database entries.
         if not (persist):
-            self.__execQuery("DROP TABLE IF EXISTS statistics;")
-        
+            self.__execQuery("DROP TABLE IF EXISTS water;")
+
         # Data table.
-        #self.__execQuery(
-            #"CREATE TABLE IF NOT EXISTS statistics(" +
-            #"readingId SERIAL PRIMARY KEY NOT NULL, " +
-            #"moisture VARCHAR(20) NOT NULL, " +
-            #"light VARCHAR(20) NOT NULL, " +
-            #"timestamp VARCHAR(20) NOT NULL);")
-        
-        # !!! IMPLEMENT !!!
-        #(id INTEGER PRIMARY KEY NOT NULL, watered INTEGER, button INTEGER, water_level FLOAT, light_level FLOAT, time_record INTEGER)
+        self.__execQuery(
+            "CREATE TABLE IF NOT EXISTS water(" +
+            "readingId SERIAL PRIMARY KEY NOT NULL, " +
+            "timestamp VARCHAR(20) NOT NULL," +
+            "moisture VARCHAR(20) NOT NULL);"
+        )
+
+        # Clear old database entries.
+        if not (persist):
+            self.__execQuery("DROP TABLE IF EXISTS light;")
+
+        self.__execQuery(
+            "CREATE TABLE IF NOT EXISTS light("
+            "readingId SERIAL PRIMARY KEY NOT NULL, " +
+            "timestamp VARCHAR(20) NOT NULL," +
+            "light VARCHAR(20) NOT NULL);"
+        )
+
+        # Clear old database entries.
+        if not (persist):
+            self.__execQuery("DROP TABLE IF EXISTS button;")
+
+        self.__execQuery(
+            "CREATE TABLE IF NOT EXISTS button("
+            "readingId SERIAL PRIMARY KEY NOT NULL, " +
+            "timestamp VARCHAR(20) NOT NULL," +
+            "state VARCHAR(20) NOT NULL);"
+        )
 
         # Settings table.
-        if not (persist):
-            self.__execQuery("DROP TABLE IF EXISTS settings;")
+        #if not (persist):
+            #self.__execQuery("DROP TABLE IF EXISTS settings;")
 
         #self.__execQuery(
             #"CREATE TABLE IF NOT EXISTS settings" +
             #"(name VARCHAR(22) PRIMARY KEY NOT NULL, " +
-            #"state VARCHAR(22) NOT NULL);")
+            #"state VARCHAR(22) NOT NULL);"
+        #)
         
-        # !!! IMPLEMENT !!!
-        #(id INTEGER PRIMARY KEY, auto_water INTEGER, auto_water_moisture FLOAT, auto_water_light FLOAT)
-
         # Set defaults.
-        with self.__conn:
-            cursor = self.__conn.cursor()
+        #with self.__conn:
+            #cursor = self.__conn.cursor()
             # This is wrapped in a try because it will fail when
             #+persistence is turned on and we don't really care as long as it
             #+exists.
-            try:
-                cursor.execute(
-                    "INSERT INTO settings VALUES('target', '25.00');" +
-                    "INSERT INTO settings VALUES('power', '0');" +
-                    "INSERT INTO settings VALUES('heating', '0');")
-                self.__conn.commit()
-            except:
-                pass
-            cursor.close()
+            #try:
+                #cursor.execute(
+                    #"INSERT INTO settings VALUES('target', '25.00');" +
+                    #"INSERT INTO settings VALUES('power', '0');" +
+                    #"INSERT INTO settings VALUES('heating', '0');")
+                #self.__conn.commit()
+            #except:
+                #pass
+            #cursor.close()
 
         # MQTT Client initializaiton.
         self.__client = []
@@ -112,8 +130,8 @@ class SiteLogic:
             #+calling a function.
             self.__client.append(mqttclient.Client(userdata=str(i)))
             print("Creating MQTT client instance " + str(i))
-            self.__client[i].on_connect = on_connect
-            self.__client[i].on_message = on_message
+            self.__client[i].on_connect = self.on_connect
+            self.__client[i].on_message = self.on_message
 
             # Initialize MQTT connection.
             port = 1883
@@ -128,83 +146,91 @@ class SiteLogic:
         
         print("mqtt loop init complete")
 
-    # Time getter
-    def getTime(self):
-        return datetime.now().strftime("%H:%M:%S")
+    # Function bound to pahoMQTT
+    # thisclient : ?
+    # userdata : ?
+    # flags : ?
+    # rc : Result code
+    def on_connect(thisclient, userdata, flags, rc):
+        print("Connected with result code: " + str(rc))
+        # Subscribe to arduino[number]/#
+        # # : denotes wildcard
+        topic = "arduino" + str(userdata) + "/#"
+        #topic = "arduino1" 
+        # Resub here so it doesn't lose subscriptions on reconnect.
+        #print(  "Subscribing to " + topic + " on " + str(sys.argv[userdata]) + ".")
+        print("Attempting subscription to " + topic + ".")
+        thisclient.subscribe(topic)
+        print("Subscribed.")
 
-    # Average sensor reading DB getter
-    def getDBAverage(self, ammount):
-        with self.__conn:
-            cursor = self.__conn.cursor()
-            cursor.execute(
-                "SELECT AVG(moisture), AVG(light) FROM statistics " +
-                "ORDER BY readingId DESC LIMIT " + str(ammount) + ";")
-            self.__conn.commit()
-            rows = cursor.fetchall()
-            cursor.close()
-                        
-            # !!! IMPLEMENT !!!
-            # Not sure what format it will return, might need typecasting.
-            return rows
-    
-    # Most recent readings DB getter.
-    def getDBRecent(self, ammount):
-        query =  "SELECT timestamp, moisture, light FROM statistics "
-        query += "ORDER BY readingId DESC LIMIT " + str(ammount) + ";"
-
-        # !!! IMPLEMENT !!!
-        # Do query.
-
-        #return rows
-
-    # Template data getter
-    # I am aware that using separate functions to make multiple
-    #+SQL queries is inefficient but this doesn't need to be perfect.
-    def getTemplateData(self):
-        # !!! IMPLEMENT !!!
-        # "moisture" and "light" are both equal to the most recent readings from
-        #+"recent" so we may not need them as they just waste the SQL server's time
-        #+with an unnecessary query.
-        #recent = getDBRecent(20)
-        # Get latest moisture and light readings from recent.
-        #moisture = recent[?]
-        #light = recent[?]
-
-        return { 'moisture' : self.getDBmoisture(),
-                 'light' : self.getDBlight(),
-                 'recent' : self.getDBRecent(20),
-                 'time' : self.getTime(),
-                 'average' : self.getDBAverage(100)}
-
-# Function bound to pahoMQTT
-# thisclient : ?
-# userdata : ?
-# flags : ?
-# rc : Result code
-def on_connect(thisclient, userdata, flags, rc):
-    print("Connected with result code: " + str(rc))
-    # Subscribe to arduino[number]/#
-    # # : denotes wildcard
-    topic = "arduino" + str(userdata) + "/#"
-    #topic = "arduino1" 
-    # Resub here so it doesn't lose subscriptions on reconnect.
-    #print(  "Subscribing to " + topic + " on " + str(sys.argv[userdata]) + ".")
-    print("Attempting subscription to " + topic + ".")
-    thisclient.subscribe(topic)
-    print("Subscribed.")
-
-# Function bound to pahoMQTT
-# thisclient : ?
-# userdata : ?
-# message : The message that was received.
-def on_message(thisclient, userdata, message):
-    # Debug code to display messages as they're received.
-    print(str(message.topic) + " " + str(message.payload))
+    # Function bound to pahoMQTT
+    # thisclient : ?
+    # userdata : ?
+    # message : The message that was received.
+    def on_message(thisclient, userdata, message):
+        # Debug code to display messages as they're received.
+        print(str(message.topic) + " " + str(message.payload))
 
     # !!! IMPLEMENT !!!
     # Filter for which sensor the data has come from using message.topic.
     # Jam into database.
     # Do some logic to determine whether something should turn on or off.
+    # Time getter
+    def getTime(self):
+        return datetime.now().strftime("%H:%M:%S")
+
+    # !!! FIX !!!
+    # THIS IS BROKEN DUE TO DATABASE CHANGES.
+    # Most recent readings DB getter.
+    def getDBRecent(self, ammount):
+        query =  "SELECT timestamp, moisture, light FROM statistics "
+        query += "ORDER BY readingId DESC LIMIT " + str(ammount) + ";"
+
+        return __execQuery(query)
+
+    def setDBMoisture(self, moisture):
+        __execQuery(
+            "INSERT INTO moisture VALUES('" +
+            getTime() + "', '" moisture + "');"
+        )
+    
+    def setDBLight(self, light):
+        __execQuery(
+            "INSERT INTO light VALUES('" +
+            getTime() + "', '" light + "');"
+        )
+
+    # !!! IMPLEMENT !!!
+    def getDBRecMoist(self, ammount):
+        pass
+    
+    # !!! IMPLEMENT !!!
+    def getDBRecLight(self, ammount):
+        pass
+
+    # !!! IMPLEMENT !!!
+    def getDBAveMoist(self, ammount):
+        pass
+
+    # !!! IMPLEMENT !!!
+    def getDBAveLight(self, ammount):
+        pass
+    
+    # Template data getter
+    # I am aware that using separate functions to make multiple
+    #+SQL queries is inefficient but this doesn't need to be perfect.
+    def getTemplateData(self):
+        return {
+            'moisture' : self.getDBMoisture(),
+            'light' : self.getDBLight(),
+            'recentmoist' : self.getDBRecMoist(20),
+            'recentlight' : self.getDBRecLight(20),
+            'time' : self.getTime(),
+            'averagemoist' : self.getDBAveMoist(100)
+            'averagelight' : self.getDBAveLight(100)
+        }
+
+
 
 # index.html file operation
 @app.route("/")

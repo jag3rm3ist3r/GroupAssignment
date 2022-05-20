@@ -82,3 +82,12 @@ Server --> ThingsBoard : tbd
 
 ThingsBoard : Subscribed to tbd
 ```
+
+## Database Structure
+
+```mermaid
+classDiagram
+class water
+class light
+class settings
+```
