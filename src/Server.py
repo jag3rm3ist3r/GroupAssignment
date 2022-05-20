@@ -229,7 +229,7 @@ class SiteLogic:
     def getDBRecLight(self, ammount):
         return __execQuery(
             "SELECT timestamp, source, state FROM light " +
-            "ORDER BY readingId DESC LIMIT " str(ammount) + ";"
+            "ORDER BY readingId DESC LIMIT " + str(ammount) + ";"
         )
 
     # Getter for average of last # DB moisture readings.
