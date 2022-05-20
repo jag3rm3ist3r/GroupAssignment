@@ -114,9 +114,9 @@ class SiteLogic:
         # Set defaults.
         with self.__conn:
             cursor = self.__conn.cursor()
-             This is wrapped in a try because it will fail when
-            +persistence is turned on and we don't really care as long as it
-            +exists.
+            #This is wrapped in a try because it will fail when
+            #+persistence is turned on and we don't really care as long as it
+            #+exists.
             try:
                 cursor.execute(
                     "INSERT INTO settings VALUES('edge_count', '0');"
