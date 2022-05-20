@@ -87,7 +87,20 @@ ThingsBoard : Subscribed to tbd
 
 ```mermaid
 classDiagram
-class water
-class light
+class water {
+    readingId
+    timestamp
+    moisture
+}
+class light {
+    readingId
+    timestamp
+    light
+}
+class button {
+    readingId
+    timestamp
+    state
+}
 class settings
 ```
