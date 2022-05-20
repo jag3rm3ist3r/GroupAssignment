@@ -151,7 +151,7 @@ class SiteLogic:
             print("Starting loop " + str(self.__client[i]))
             self.__client[i].loop_start()
         
-        setDBEdgeCount(len(self.__client))
+        self.setDBEdgeCount(len(self.__client))
         
         print("mqtt init loop complete")
 
