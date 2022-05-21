@@ -184,6 +184,11 @@ class SiteLogic:
                 "INSERT INTO settings (name, state, edgeId) " +
                 "VALUES('target_moisture', '0', '" + str(j) + "');"
             )
+            self.__execQuery(
+                "INSERT INTO settings (name, state, edgeId) " +
+                "VALUES('target_light', '0', '" + str(j) + "');"
+            )
+
 
         print("mqtt init loop complete")
 
@@ -199,14 +204,26 @@ class SiteLogic:
             "WHERE name='target_moisture' " +
             "AND edgeId='" + edgeId + "';"
         )
-        #return result
-    # Getter for DB moisture target.
     def getDBTargetMoist(self):
         return self.__execQuery(
             "SELECT state, edgeId FROM settings " +
             "WHERE name='target_moisture';"
         )
-
+    
+    # OVERLOADED
+    # Getter for DB light target
+    def getDBTargetLight(self, edgeId):
+        return self.__execQuery(
+            "SELECT state FROM settings " +
+            "WHERE name='target_light' " +
+            "AND edgeId='" + edgeId + "';"
+        )
+    def getDBTargetMoist(self):
+        return self.__execQuery(
+            "SELECT state, edgeId FROM settings " +
+            "WHERE name='target_light';"
+        )
+ 
     # Setter for DB moisture target.
     def setDBTargetMoist(self, edgeId, state):
         self.__execQuery(
