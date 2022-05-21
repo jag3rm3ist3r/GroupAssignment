@@ -206,7 +206,8 @@ class SiteLogic:
     def getDBTargetMoist(self):
         return self.__execQuery(
             "SELECT state, edgeId FROM settings " +
-            "WHERE name='target_moisture';"
+            "WHERE name='target_moisture' " +
+            "ORDER BY edgeId;"
         )
 
     # Setter for DB moisture target.
@@ -228,7 +229,8 @@ class SiteLogic:
     def getDBTargetLight(self):
         return self.__execQuery(
             "SELECT state, edgeId FROM settings " +
-            "WHERE name='target_light';"
+            "WHERE name='target_light' " +
+            "ORDER BY edgeId;"
         )
  
     # Setter for DB light target.
