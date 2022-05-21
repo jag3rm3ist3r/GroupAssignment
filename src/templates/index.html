@@ -23,7 +23,9 @@
 
 		<!-- Current status of the sensors. -->
 		<h2>Soil Moisture</h2>
-		The soil moisture is currently {{ moisture }}
+		{% for m in moisture %}
+			The soil moisture on edge {{ m[2] }} is currently {{ m[1] }}
+		{% endfor %}
 		<h2>Light</h2>
 		The light is currently {{ light }}
 		</br></br></br>
