@@ -413,7 +413,7 @@ def index():
 def main():
     global sl
     # Set argument to true if you would like to retain existing data in table.
-    sl = SiteLogic(False)
+    sl = SiteLogic(True)
     # Setup MQTT, which relies on sl being defined first.
     sl.initMQTT()
 
