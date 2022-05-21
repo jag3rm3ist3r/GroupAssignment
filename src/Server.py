@@ -202,7 +202,7 @@ class SiteLogic:
             "SELECT state FROM settings " +
             "WHERE name='target_moisture' " +
             "AND edgeId='" + edgeId + "';"
-        )[0]
+        )[0][0]
     def getDBTargetMoist(self):
         return self.__execQuery(
             "SELECT state, edgeId FROM settings " +
@@ -224,7 +224,7 @@ class SiteLogic:
             "SELECT state FROM settings " +
             "WHERE name='target_light' " +
             "AND edgeId='" + edgeId + "';"
-        )[0]
+        )[0][0]
     def getDBTargetLight(self):
         return self.__execQuery(
             "SELECT state, edgeId FROM settings " +
