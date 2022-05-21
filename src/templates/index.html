@@ -76,16 +76,6 @@
 				<td>{{ row[2] }}</td>
 			</tr>
 		{% endfor %}
-		</table>
-				<table>
-			<th></th><th></th><th>Average</th>
-			<tr style="background-color: #FFFFFF;">
-				<td></td>
-				<td></td>
-				<td>{{ averagemoist }}</td>
-			</tr>
-		</table>
-		<!-- Table containing recent light data from SQL database. -->
 		<h3>Recent Light Data</h3>
 		<table>
 		<th>Timestamp</th><th>Source</th><th>Light</th>
@@ -96,14 +86,5 @@
 				<td>{{ row[2] }}</td>
 			</tr>
 		{% endfor %}
-		</table>
-				<table>
-			<th></th><th></th><th>Average</th>
-			<tr style="background-color: #FFFFFF;">
-				<td></td>
-				<td></td>
-				<td>{{ averagelight }}</td>
-			</tr>
-		</table>
 	</body>
 </html>
