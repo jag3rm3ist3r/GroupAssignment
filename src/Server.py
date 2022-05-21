@@ -111,8 +111,9 @@ class SiteLogic:
         )
 
         # Settings table.
-        if not (persist):
-            self.__execQuery("DROP TABLE IF EXISTS settings;")
+        # Always drop.
+        #if not (persist):
+        self.__execQuery("DROP TABLE IF EXISTS settings;")
 
         self.__execQuery(
             "CREATE TABLE IF NOT EXISTS settings" +
