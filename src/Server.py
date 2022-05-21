@@ -209,7 +209,16 @@ class SiteLogic:
             "SELECT state, edgeId FROM settings " +
             "WHERE name='target_moisture';"
         )
-    
+
+    # Setter for DB moisture target.
+    def setDBTargetMoist(self, edgeId, state):
+        self.__execQuery(
+            "UPDATE settings SET " +
+            "state='" + state + "' " +
+            "WHERE name='target_moisture' " +
+            "AND edgeId='" + edgeId + "';"
+        )    
+
     # OVERLOADED
     # Getter for DB light target
     def getDBTargetLight(self, edgeId):
@@ -224,12 +233,12 @@ class SiteLogic:
             "WHERE name='target_light';"
         )
  
-    # Setter for DB moisture target.
-    def setDBTargetMoist(self, edgeId, state):
+    # Setter for DB light target.
+    def setDBTargetLight(self, edgeId, state):
         self.__execQuery(
             "UPDATE settings SET " +
             "state='" + state + "' " +
-            "WHERE name='target_moisture' " +
+            "WHERE name='target_light' " +
             "AND edgeId='" + edgeId + "';"
         )
 
