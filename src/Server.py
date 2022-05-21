@@ -247,9 +247,10 @@ class SiteLogic:
     def getDBMoisture(self):
         # Buffer result.
         return self.__execQuery(
-            "SELECT state FROM moisture " +
-            "ORDER BY readingId DESC LIMIT 2;"
-        )[0]
+            "SELECT MIN(readingId), state, source " +
+            "FROM moisture " +
+            "GROUP BY source, state;"
+        )
         # Only return first row.
         #return result[0]
 
