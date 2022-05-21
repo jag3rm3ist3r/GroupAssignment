@@ -445,22 +445,24 @@ def index():
 @app.route("/<targetName>/<edgeId>/<direction>")
 def adjustTarget(targetName, edgeId, direction):
     global sl
-    # Adjust which target?
+    newVal = 0
+    # Adjust moisture.
     if (targetName == 'moisture'):
         if(direction == 'up'):
-            newVal = sl.getDBTargetMoist() + Decimal(1.00)
+            newVal = sl.getDBTargetMoist(edgeId) + Decimal(1.00)
         else:
-            newVal = sl.getDBTargetMoist() - Decimal(1.00)
+            newVal = sl.getDBTargetMoist(edgeId) - Decimal(1.00)
         
         sl.setDBTargetMoist(newVal)
 
+    # Adjust light.
     if (targetName == 'light'):
         if(direction == 'up'):
-            newVal = sl.getDBTargetLight() + Decimal(1.00)
+            newVal = sl.getDBTargetLight(edgeId) + Decimal(1.00)
         else:
-            newVal = sl.getDBTargetLight() - Decimal(1.00)
+            newVal = sl.getDBTargetLight(edgeId) - Decimal(1.00)
     
-        sl.setDBTargetLight(newVal)
+        sl.setDBTargetLight(edgeId, newVal)
 
 
 def main():
