@@ -28,6 +28,12 @@
 		The light is currently {{ light }}
 		</br></br></br>
 		
+		<h2>Moisture Targets</h2>
+		{% for targets in moisttarget %}
+			Moisture target for edge {{ target[1] }} : {{ target[0] }}</br>
+		{% endfor %}
+
+
 		<h2>Sensor reading history</h2>		
 		<!-- Table containing recent moisture data from SQL database. -->
 		<table>

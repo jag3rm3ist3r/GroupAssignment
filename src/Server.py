@@ -183,14 +183,21 @@ class SiteLogic:
     def getTime(self):
         return datetime.now().strftime("%H:%M:%S")
 
+    # OVERLOADED
     # Getter for DB moisture target.
     def getDBTargetMoist(self, edgeId):
         return self.__execQuery(
             "SELECT state FROM settings " +
-            "WHERE name='target_moisture' "
+            "WHERE name='target_moisture' " +
             "AND edgeId='" + edgeId + "';"
         )
         #return result
+    # Getter for DB moisture target.
+    def getDBTargetMoist(self):
+        return self.__execQuery(
+            "SELECT state, edgeId FROM settings " +
+            "WHERE name='target_moisture';"
+        )
 
     # Setter for DB moisture target.
     def setDBTargetMoist(self, edgeId, state):
@@ -231,20 +238,20 @@ class SiteLogic:
     # Getter for most recent DB moisture reading.
     def getDBMoisture(self):
         # Buffer result.
-        result = self.__execQuery(
+        return self.__execQuery(
             "SELECT state FROM moisture " +
             "ORDER BY readingId DESC LIMIT 2;"
-        )
+        )[0]
         # Only return first row.
-        return result[0]
+        #return result[0]
 
     # Getter for most recent DB light reading.
     def getDBLight(self):
-        result = self.__execQuery(
+        return self.__execQuery(
             "SELECT state FROM light " +
             "ORDER BY readingId DESC LIMIT 2;"
-        )
-        return result[0]
+        )[0]
+        #return result[0]
 
     # Getter for most recent # DB moisture readings.
     def getDBRecMoist(self, ammount):
@@ -287,11 +294,12 @@ class SiteLogic:
     #+SQL queries is inefficient but this doesn't need to be perfect.
     def getTemplateData(self):
         return {
+            'time' : self.getTime(),
             'moisture' : self.getDBMoisture(),
             'light' : self.getDBLight(),
+            'moisttarget' : self.getDBTargetMoist(),
             'recentmoist' : self.getDBRecMoist(20),
             'recentlight' : self.getDBRecLight(20),
-            'time' : self.getTime(),
             'averagemoist' : self.getDBAveMoist(100),
             'averagelight' : self.getDBAveLight(100)
         }
@@ -418,7 +426,8 @@ def main():
         port = 80,
         debug = True,
         threaded = False,
-        use_reloader=False)
+        use_reloader=False
+    )
 
 
 if __name__ == '__main__':
