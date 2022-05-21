@@ -462,6 +462,9 @@ def adjustTarget(targetName, edgeId, direction):
     
         sl.setDBTargetLight(edgeId, newVal)
 
+    templateData = sl.getTemplateData()
+    return render_template('index.html', **templateData)
+
 
 def main():
     global sl
