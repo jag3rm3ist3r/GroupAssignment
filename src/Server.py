@@ -159,13 +159,13 @@ class SiteLogic:
         # Set defaults for settings table.
         # This is done here since we don't know how many edge devices there are
         #+up until this point.
-        with self.__conn:
-            cursor = self.__conn.cursor()
-            #This is wrapped in a try because it will fail when
-            #+persistence is turned on and we don't really care as long as it
-            #+exists.
-            try:
-                for i in range(len(self.__client)):
+        for i in range(EDGE_COUNT):
+            with self.__conn:
+                cursor = self.__conn.cursor()
+                #This is wrapped in a try because it will fail when
+                #+persistence is turned on and we don't really care as long as it
+                #+exists.
+                try:
                     # Changes what number we start counting from.
                     j = i + EDGE_NUMBERING_OFFSET
                     cursor.execute(
@@ -173,9 +173,9 @@ class SiteLogic:
                         "'target_moisture', '0', '" + j + "');"
                     )
                     self.__conn.commit()
-            except:
-                pass
-            cursor.close()
+                except:
+                    pass
+                cursor.close()
 
         print("mqtt init loop complete")
 
