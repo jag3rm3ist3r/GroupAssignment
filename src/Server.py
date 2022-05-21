@@ -249,7 +249,8 @@ class SiteLogic:
         return self.__execQuery(
             "SELECT MIN(readingId), state, source " +
             "FROM moisture " +
-            "GROUP BY source, state;"
+            "GROUP BY source, state " +
+            "ORDER BY source;"
         )
 
     # Getter for most recent DB light reading.
@@ -257,7 +258,8 @@ class SiteLogic:
         return self.__execQuery(
             "SELECT MIN(readingId), state, source " +
             "FROM light " +
-            "GROUP BY source, state;"
+            "GROUP BY source, state " +
+            "ORDER BY source;"
         )
 
     # Getter for most recent # DB moisture readings.
