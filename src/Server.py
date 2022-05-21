@@ -181,7 +181,7 @@ class SiteLogic:
             '''
             self.__execQuery(
                 "INSERT INTO settings (name, state, edgeId) " +
-                "VALUES('target_moisture', '0', '" + j + "');"
+                "VALUES('target_moisture', '0', '" + str(j) + "');"
             )
 
         print("mqtt init loop complete")
