@@ -331,9 +331,7 @@ class SiteLogic:
             'moisttarget' : self.getDBTargetMoist(),
             'lighttarget' : self.getDBTargetLight(),
             'recentmoist' : self.getDBRecMoist(10),
-            'recentlight' : self.getDBRecLight(10),
-            'averagemoist' : self.getDBAveMoist(100),
-            'averagelight' : self.getDBAveLight(100)
+            'recentlight' : self.getDBRecLight(10)
         }
     
     # Fetch new weather data.
