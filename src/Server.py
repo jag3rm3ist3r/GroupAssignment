@@ -451,7 +451,7 @@ def adjustTarget(targetName, edgeId, direction):
         else:
             newVal = Decimal(sl.getDBTargetMoistById(edgeId)) - Decimal(1.00)
         
-        sl.setDBTargetMoist(newVal)
+        sl.setDBTargetMoist(edgeId, newVal)
 
     # Adjust light.
     if (targetName == 'light'):
