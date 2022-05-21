@@ -23,11 +23,21 @@
 
 		<!-- Current status of the sensors. -->
 		<h2>Soil Moisture</h2>
+		<div>
 		{% for m in moisture %}
+			<div>
 			The soil moisture on edge {{ m[2] }} is currently {{ m[1] }}
+			</div>
 		{% endfor %}
+		</div>
 		<h2>Light</h2>
-		The light is currently {{ light }}
+		<div>
+		{% for l in light %}
+			<div>
+			The light on edge {{ l[2] }} is currently {{ l[1] }}
+			</div>
+		{% endfor %}
+		</div>
 		</br></br></br>
 		
 		<h2>Moisture Targets</h2>

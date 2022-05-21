@@ -251,16 +251,14 @@ class SiteLogic:
             "FROM moisture " +
             "GROUP BY source, state;"
         )
-        # Only return first row.
-        #return result[0]
 
     # Getter for most recent DB light reading.
     def getDBLight(self):
         return self.__execQuery(
-            "SELECT state FROM light " +
-            "ORDER BY readingId DESC LIMIT 2;"
-        )[0]
-        #return result[0]
+            "SELECT MIN(readingId), state, source " +
+            "FROM light " +
+            "GROUP BY source, state;"
+        )
 
     # Getter for most recent # DB moisture readings.
     def getDBRecMoist(self, ammount):
@@ -268,7 +266,6 @@ class SiteLogic:
             "SELECT timestamp, source, state FROM moisture " +
             "ORDER BY readingId DESC LIMIT " + str(ammount) + ";"
         )
-        #return result
     
     # Getter for most recent # DB light readings.
     def getDBRecLight(self, ammount):
@@ -276,7 +273,6 @@ class SiteLogic:
             "SELECT timestamp, source, state FROM light " +
             "ORDER BY readingId DESC LIMIT " + str(ammount) + ";"
         )
-        #return result
 
     # !!! IMPLEMENT !!!
     # Take edgeId as argument to select which data set to draw from.
@@ -286,7 +282,6 @@ class SiteLogic:
             "SELECT AVG(state) FROM moisture " +
             "GROUP BY state LIMIT " + str(ammount) + ";"
         )[0]
-        #return result
 
     # !!! IMPLEMENT !!!
     # Take edgeId as argument to select which data set to draw from.
@@ -296,7 +291,6 @@ class SiteLogic:
             "SELECT AVG(state) FROM light " +
             "GROUP BY state LIMIT " + str(ammount) + ";"
         )[0]
-        #return result
     
     # Template data getter
     # I am aware that using separate functions to make multiple
