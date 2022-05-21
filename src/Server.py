@@ -170,8 +170,8 @@ class SiteLogic:
                     # Changes what number we start counting from.
                     j = i + EDGE_NUMBERING_OFFSET
                     cursor.execute(
-                        "INSERT INTO settings VALUES(" +
-                        "'target_moisture', '0', '" + j + "');"
+                        "INSERT INTO settings (name, state, edgeId) " +
+                        "VALUES('target_moisture', '0', '" + j + "');"
                     )
                     self.__conn.commit()
                 except:
