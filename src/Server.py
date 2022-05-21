@@ -201,7 +201,7 @@ class SiteLogic:
         return self.__execQuery(
             "SELECT state FROM settings " +
             "WHERE name='target_moisture' " +
-            "AND edgeId='" + edgeId + "';"
+            "AND edgeId='" + str(edgeId) + "';"
         )[0][0]
     def getDBTargetMoist(self):
         return self.__execQuery(
@@ -213,9 +213,9 @@ class SiteLogic:
     def setDBTargetMoist(self, edgeId, state):
         self.__execQuery(
             "UPDATE settings SET " +
-            "state='" + state + "' " +
+            "state='" + str(state) + "' " +
             "WHERE name='target_moisture' " +
-            "AND edgeId='" + edgeId + "';"
+            "AND edgeId='" + str(edgeId) + "';"
         )    
 
     # Getter for DB light target
@@ -223,7 +223,7 @@ class SiteLogic:
         return self.__execQuery(
             "SELECT state FROM settings " +
             "WHERE name='target_light' " +
-            "AND edgeId='" + edgeId + "';"
+            "AND edgeId='" + str(edgeId) + "';"
         )[0][0]
     def getDBTargetLight(self):
         return self.__execQuery(
@@ -235,9 +235,9 @@ class SiteLogic:
     def setDBTargetLight(self, edgeId, state):
         self.__execQuery(
             "UPDATE settings SET " +
-            "state='" + state + "' " +
+            "state='" + str(state) + "' " +
             "WHERE name='target_light' " +
-            "AND edgeId='" + edgeId + "';"
+            "AND edgeId='" + str(edgeId) + "';"
         )
 
     # Setter for DB moisture readings.
