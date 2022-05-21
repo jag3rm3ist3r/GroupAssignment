@@ -447,18 +447,18 @@ def adjustTarget(targetName, edgeId, direction):
     # Adjust moisture.
     if (targetName == 'moisture'):
         if(direction == 'up'):
-            newVal = sl.getDBTargetMoistById(edgeId) + Decimal(1.00)
+            newVal = Decimal(sl.getDBTargetMoistById(edgeId)) + Decimal(1.00)
         else:
-            newVal = sl.getDBTargetMoistById(edgeId) - Decimal(1.00)
+            newVal = Decimal(sl.getDBTargetMoistById(edgeId)) - Decimal(1.00)
         
         sl.setDBTargetMoist(newVal)
 
     # Adjust light.
     if (targetName == 'light'):
         if(direction == 'up'):
-            newVal = sl.getDBTargetLightById(edgeId) + Decimal(1.00)
+            newVal = Decimal(sl.getDBTargetLightById(edgeId)) + Decimal(1.00)
         else:
-            newVal = sl.getDBTargetLightById(edgeId) - Decimal(1.00)
+            newVal = Decimal(sl.getDBTargetLightById(edgeId)) - Decimal(1.00)
     
         sl.setDBTargetLight(edgeId, newVal)
 
