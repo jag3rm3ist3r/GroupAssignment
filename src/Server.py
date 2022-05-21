@@ -330,8 +330,8 @@ class SiteLogic:
             'light' : self.getDBLight(),
             'moisttarget' : self.getDBTargetMoist(),
             'lighttarget' : self.getDBTargetLight(),
-            'recentmoist' : self.getDBRecMoist(20),
-            'recentlight' : self.getDBRecLight(20),
+            'recentmoist' : self.getDBRecMoist(10),
+            'recentlight' : self.getDBRecLight(10),
             'averagemoist' : self.getDBAveMoist(100),
             'averagelight' : self.getDBAveLight(100)
         }
