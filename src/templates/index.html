@@ -45,10 +45,10 @@
 		{% for targets in moisttarget %}
 			<div>
 				Moisture target for edge {{ targets[1] }} : {{ targets[0] }}
-				<a	href={{ 'moisture/' ~ targets[1] ~ '/up' }}
+				<a	href={{ '/moisture/' ~ targets[1] ~ '/up' }}
 					class="btn btn-block btn-lg btn-default"
 					role="button">Up</a>
-				<a	href={{ 'moisture/' ~ targets[1] ~ '/down' }}
+				<a	href={{ '/moisture/' ~ targets[1] ~ '/down' }}
 					class="btn btn-block btn-lg btn-default"
 					role="button">Down</a>
 			</div>
@@ -60,10 +60,10 @@
 		{% for targets in lighttarget %}
 			<div>
 				Light target for edge {{ targets[1] }} : {{ targets[0] }}
-				<a	href={{ 'light/' ~ targets[1] ~ '/up' }}
+				<a	href={{ '/light/' ~ targets[1] ~ '/up' }}
 					class="btn btn-block btn-lg btn-default"
 					role="button">Up</a>
-				<a	href={{ 'light/' ~ targets[1] ~ '/down' }}
+				<a	href={{ '/light/' ~ targets[1] ~ '/down' }}
 					class="btn btn-block btn-lg btn-default"
 					role="button">Down</a>
 			</div>
