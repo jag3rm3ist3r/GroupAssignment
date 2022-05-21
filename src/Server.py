@@ -161,6 +161,8 @@ class SiteLogic:
         # This is done here since we don't know how many edge devices there are
         #+up until this point.
         for i in range(EDGE_COUNT):
+            j = i + EDGE_NUMBERING_OFFSET
+            '''
             with self.__conn:
                 cursor = self.__conn.cursor()
                 #This is wrapped in a try because it will fail when
@@ -168,7 +170,6 @@ class SiteLogic:
                 #+exists.
                 try:
                     # Changes what number we start counting from.
-                    j = i + EDGE_NUMBERING_OFFSET
                     cursor.execute(
                         "INSERT INTO settings (name, state, edgeId) " +
                         "VALUES('target_moisture', '0', '" + j + "');"
@@ -177,6 +178,11 @@ class SiteLogic:
                 except:
                     pass
                 cursor.close()
+            '''
+            self.__execQuery(
+                "INSERT INTO settings (name, state, edgeId) " +
+                "VALUES('target_moisture', '0', '" + j + "');"
+            )
 
         print("mqtt init loop complete")
 
