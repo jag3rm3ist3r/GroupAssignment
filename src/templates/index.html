@@ -29,11 +29,9 @@
 		</br></br></br>
 		
 		<h2>Moisture Targets</h2>
-		{{ moisttarget }}
 		<div>
 		{% for targets in moisttarget %}
 			<div>
-		 		{{ targets }}
 				Moisture target for edge {{ targets[1] }} : {{ targets[0] }}
 			</div>
 		{% endfor %}
