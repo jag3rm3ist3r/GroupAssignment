@@ -196,9 +196,8 @@ class SiteLogic:
     def getTime(self):
         return datetime.now().strftime("%H:%M:%S")
 
-    # OVERLOADED
     # Getter for DB moisture target.
-    def getDBTargetMoist(self, edgeId):
+    def getDBTargetMoistById(self, edgeId):
         return self.__execQuery(
             "SELECT state FROM settings " +
             "WHERE name='target_moisture' " +
@@ -219,9 +218,8 @@ class SiteLogic:
             "AND edgeId='" + edgeId + "';"
         )    
 
-    # OVERLOADED
     # Getter for DB light target
-    def getDBTargetLight(self, edgeId):
+    def getDBTargetLightById(self, edgeId):
         return self.__execQuery(
             "SELECT state FROM settings " +
             "WHERE name='target_light' " +
@@ -449,18 +447,18 @@ def adjustTarget(targetName, edgeId, direction):
     # Adjust moisture.
     if (targetName == 'moisture'):
         if(direction == 'up'):
-            newVal = sl.getDBTargetMoist(edgeId) + Decimal(1.00)
+            newVal = sl.getDBTargetMoistById(edgeId) + Decimal(1.00)
         else:
-            newVal = sl.getDBTargetMoist(edgeId) - Decimal(1.00)
+            newVal = sl.getDBTargetMoistById(edgeId) - Decimal(1.00)
         
         sl.setDBTargetMoist(newVal)
 
     # Adjust light.
     if (targetName == 'light'):
         if(direction == 'up'):
-            newVal = sl.getDBTargetLight(edgeId) + Decimal(1.00)
+            newVal = sl.getDBTargetLightById(edgeId) + Decimal(1.00)
         else:
-            newVal = sl.getDBTargetLight(edgeId) - Decimal(1.00)
+            newVal = sl.getDBTargetLightById(edgeId) - Decimal(1.00)
     
         sl.setDBTargetLight(edgeId, newVal)
 
