@@ -106,6 +106,7 @@ class button {
     state
 }
 class settings {
+    settingId
     name
     state
     edgeId
