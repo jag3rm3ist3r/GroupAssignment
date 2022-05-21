@@ -441,6 +441,27 @@ def index():
     templateData = sl.getTemplateData()
     return render_template('index.html', **templateData)
 
+# Increment/decrement the specified target.
+@app.route("/<targetName>/<edgeId>/<direction>")
+def adjustTarget(targetName, edgeId, direction):
+    global sl
+    # Adjust which target?
+    if (targetName == 'moisture'):
+        if(direction == 'up'):
+            newVal = sl.getDBTargetMoist() + Decimal(1.00)
+        else:
+            newVal = sl.getDBTargetMoist() - Decimal(1.00)
+        
+        sl.setDBTargetMoist(newVal)
+
+    if (targetName == 'light'):
+        if(direction == 'up'):
+            newVal = sl.getDBTargetLight() + Decimal(1.00)
+        else:
+            newVal = sl.getDBTargetLight() - Decimal(1.00)
+    
+        sl.setDBTargetLight(newVal)
+
 
 def main():
     global sl
