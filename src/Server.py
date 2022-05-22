@@ -142,19 +142,19 @@ class SiteLogic:
             # User userdata as the index for if we don't know which client is
             #+calling a function.
             self.__client.append(mqttclient.Client(userdata=str(i)))
-            print("Creating MQTT client instance " + str(i))
+            #print("Creating MQTT client instance " + str(i))
             self.__client[i].on_connect = on_connect
             self.__client[i].on_message = on_message
 
             # Initialize MQTT connection.
             port = 1883
-            print("Attempting to connect on " + HOSTNAME + ":" + str(port))
+            #print("Attempting to connect on " + HOSTNAME + ":" + str(port))
             # args: host, port, keepalive
             self.__client[i].connect(HOSTNAME, port, 60)
 
         # Start MQTT loop(s).
         for i in range(len(self.__client)):
-            print("Starting loop " + str(self.__client[i]))
+            #print("Starting loop " + str(self.__client[i]))
             self.__client[i].loop_start()
         
         # Little sanity check.
@@ -195,7 +195,7 @@ class SiteLogic:
         self.__tbClient.username_pw_set(ACCESS_TOKEN)
         self.__tbClient.connect(THINGSBOARD_ADDRESS, 1883, 60) 
 
-        print("mqtt init loop complete")
+        #print("mqtt init loop complete")
 
     # Time getter
     def getTime(self):
@@ -359,9 +359,9 @@ class SiteLogic:
         mqttpublish.single(topic, payload, hostname=HOSTNAME)
 
     def sendMQTTThingsBoard(self, data):
-        print("DEBUG inside")
-        print(data)
-        print(json.dumps(data))
+        #print("DEBUG inside")
+        #print(data)
+        #print(json.dumps(data))
         self.__tbClient.publish("v1/devices/me/telemetry", json.dumps(data))
 
 
@@ -372,14 +372,14 @@ class SiteLogic:
 # rc : Result code
 def on_connect(thisclient, userdata, flags, rc):
     global sl
-    print("Connected with result code: " + str(rc))
+    #print("Connected with result code: " + str(rc))
     # Subscribe to edge[number]data/#
     # # : denotes wildcard
     topic = "edge" + str(userdata) + "data/#"
     # Resub here so it doesn't lose subscriptions on reconnect.
-    print("Attempting subscription to " + topic + ".")
+    #print("Attempting subscription to " + topic + ".")
     thisclient.subscribe(topic)
-    print("Subscribed.")
+    #print("Subscribed.")
 
 # Function bound to pahoMQTT
 # thisclient : ?
@@ -413,26 +413,26 @@ def on_message(thisclient, userdata, message):
     print("source : " + str(source))
     '''
 
-    print("Call: setDBMoisture()")
+    #print("Call: setDBMoisture()")
     # Check what the topic is, store information in that table.
     # Sadly match - case was introduced in a later version of python.
     if(topicSplit[1] == "water_level"):
         #print("Logging moisture : " + message.payload)
         sl.setDBMoisture(source, message.payload)
 
-    print("Call: setDBLight()")
+    #print("Call: setDBLight()")
 
     if(topicSplit[1] == "light_level"):
         #print("Logging light level : " + message.payload)
         sl.setDBLight(source, message.payload)
 
-    print("Call: setDBButton()")
+    #print("Call: setDBButton()")
 
     if(topicSplit[1] == "button"):
         #print("Logging button press : " + message.payload)
         sl.setDBButton(source, message.payload)
 
-    print("Test: needsWater")
+    #print("Test: needsWater")
     
     needsWater = False
     willRain = False
@@ -440,30 +440,27 @@ def on_message(thisclient, userdata, message):
     if(sl.getDBAveMoist(20) < sl.getDBTargetMoistById(source)):
         needsWater = True
 
-    print("Test: willRain")
+    #print("Test: willRain")
 
     # Check if there will be enough water today to water the plant.
     if(sl.getAPIWeatherRain()[0] < 2):
         willRain = True
 
-    print("Call: supplyWater")
+    #print("Call: supplyWater")
     
     # Supply water if needed.
     if(needsWater == True and willRain == False):
         sl.supplyWater(source)
 
-    print("Create: dict data")
+    #print("Create: dict data")
     
     # Send data to ThingsBoard.
     data = {}
-
-    print("Populate: dict data")
-
+    #print("Populate: dict data")
     data[message.topic] = message.payload
-
-    print("DEBUG outside")
-    print(data)
-    print(json.dumps(data))
+    #print("DEBUG outside")
+    #print(data)
+    #print(json.dumps(data))
     sl.sendMQTTThingsBoard(data)
 
 
