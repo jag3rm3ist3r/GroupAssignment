@@ -307,17 +307,21 @@ class SiteLogic:
             "ORDER BY readingId DESC LIMIT " + str(ammount) + ";"
         )
 
-    # !!! IMPLEMENT !!!
-    # Take edgeId as argument to select which data set to draw from.
     # Getter for average of last # DB moisture readings.
     def getDBAveMoist(self, ammount):
         return self.__execQuery(
             "SELECT AVG(state) FROM moisture " +
             "GROUP BY state LIMIT " + str(ammount) + ";"
         )[0]
+    
+    def getDBAveMoistById(self, source, ammount):
+        return self.__execQuery(
+            "SELECT AVG(state) " +
+            "FROM moisture "
+            "WHERE source='" + str(source) + "' " +
+            "LIMIT " + str(ammount) + ";"
+        )
 
-    # !!! IMPLEMENT !!!
-    # Take edgeId as argument to select which data set to draw from.
     # Getter for average of last # DB light readings.
     def getDBAveLight(self, ammount):
         return self.__execQuery(
@@ -437,7 +441,7 @@ def on_message(thisclient, userdata, message):
     needsWater = False
     willRain = False
     # Check if the plant needs water.
-    if(sl.getDBAveMoist(20) < sl.getDBTargetMoistById(source)):
+    if(sl.getDBAveMoistById(source, 20) < sl.getDBTargetMoistById(source)):
         needsWater = True
 
     #print("Test: willRain")
@@ -458,6 +462,7 @@ def on_message(thisclient, userdata, message):
     data = {}
     #print("Populate: dict data")
     data[message.topic] = message.payload
+    data["watered"] = str(needsWater)
     #print("DEBUG outside")
     #print(data)
     #print(json.dumps(data))
