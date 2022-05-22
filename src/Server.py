@@ -191,7 +191,7 @@ class SiteLogic:
                 "VALUES('target_light', '0', '" + str(j) + "');"
             )
 
-        self.__tbClient = mqttclient.Client()
+        self.__tbClient = mqttclient.Client("ThingsBoard")
         self.__tbClient.username_pw_set(ACCESS_TOKEN)
         self.__tbClient.connect(THINGSBOARD_ADDRESS, 1883, 60) 
 
@@ -382,14 +382,14 @@ class SiteLogic:
 # rc : Result code
 def on_connect(thisclient, userdata, flags, rc):
     global sl
-    #print("Connected with result code: " + str(rc))
+    print("Connected with result code: " + str(rc))
     # Subscribe to edge[number]data/#
     # # : denotes wildcard
     topic = "edge" + str(userdata) + "data/#"
     # Resub here so it doesn't lose subscriptions on reconnect.
-    #print("Attempting subscription to " + topic + ".")
+    print("Attempting subscription to " + topic + ".")
     thisclient.subscribe(topic)
-    #print("Subscribed.")
+    print("Subscribed.")
 
 # Function bound to pahoMQTT
 # thisclient : ?
@@ -429,19 +429,13 @@ def on_message(thisclient, userdata, message):
         #print("Logging moisture : " + message.payload)
         sl.setDBMoisture(source, message.payload)
 
-    print("432")
-
     if(topicSplit[1] == "light_level"):
         #print("Logging light level : " + message.payload)
         sl.setDBLight(source, message.payload)
 
-    print("438")
-
     if(topicSplit[1] == "button"):
         #print("Logging button press : " + message.payload)
         sl.setDBButton(source, message.payload)
-
-    print("444")
 
     needsWater = False
     willRain = False
@@ -449,19 +443,13 @@ def on_message(thisclient, userdata, message):
     if(sl.getDBAveMoistById(source, 20) < sl.getDBTargetMoistById(source)):
         needsWater = True
 
-    print("452")
-
     # Check if there will be enough water today to water the plant.
     if(sl.getAPIWeatherRain()[0] < 2):
         willRain = True
-    
-    print("458")
 
     # Supply water if needed.
     if(needsWater == True and willRain == False):
         sl.supplyWater(source)
-
-    print("464")
 
     # Send data to ThingsBoard.
     data = {}
@@ -472,14 +460,10 @@ def on_message(thisclient, userdata, message):
     else:
         data["watered"] = "1"
 
-    print("475")
-
     # Check if the button was pressed and assume watered if it was since that's
     #+what the button does.
     if(topicSplit[1] == "button"):
         data["watered"] = str(message.payload)
-
-    print("482")
 
     # Send data onward to ThingsBoard.
     sl.sendMQTTThingsBoard(data)
@@ -547,6 +531,7 @@ if __name__ == '__main__':
 
 
 '''
+# MQTT example code
 
 import paho.mqtt.client as mqtt
 import time
