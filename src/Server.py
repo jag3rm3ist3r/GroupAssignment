@@ -462,7 +462,10 @@ def on_message(thisclient, userdata, message):
     data = {}
     #print("Populate: dict data")
     data[message.topic] = message.payload
-    data["watered"] = str(needsWater)
+    if(needsWater):
+        data["watered"] = "0"
+    else:
+        data["watered"] = "1"
     #print("DEBUG outside")
     #print(data)
     #print(json.dumps(data))
