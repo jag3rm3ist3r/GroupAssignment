@@ -437,7 +437,7 @@ def on_message(thisclient, userdata, message):
     needsWater = False
     willRain = False
     # Check if the plant needs water.
-    if(sl.getDBAveMoist(20) < sl.getDBTargetMoist(source)):
+    if(sl.getDBAveMoist(20) < sl.getDBTargetMoistById(source)):
         needsWater = True
 
     print("Test: willRain")
