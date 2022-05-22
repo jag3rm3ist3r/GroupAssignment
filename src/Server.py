@@ -431,6 +431,8 @@ def on_message(thisclient, userdata, message):
         data["watered"] = "0"
     else:
         data["watered"] = "1"
+
+    print("435")
     
     # Check what the topic is, store information in that table.
     # Sadly match - case was introduced in a later version of python.
@@ -438,14 +440,20 @@ def on_message(thisclient, userdata, message):
         #print("Logging moisture : " + message.payload)
         sl.setDBMoisture(source, message.payload)
 
+    print("443")
+
     if(topicSplit[1] == "light_level"):
         #print("Logging light level : " + message.payload)
         sl.setDBLight(source, message.payload)
+
+    print("449")
 
     if(topicSplit[1] == "button"):
         #print("Logging button press : " + message.payload)
         sl.setDBButton(source, message.payload)
         data["watered"] = str(message.payload)
+
+    print("456")
 
     needsWater = False
     willRain = False
@@ -453,13 +461,19 @@ def on_message(thisclient, userdata, message):
     if(sl.getDBAveMoistById(source, 20) < sl.getDBTargetMoistById(source)):
         needsWater = True
 
+    print("464")
+
     # Check if there will be enough water today to water the plant.
     if(sl.getAPIWeatherRain()[0] < 2):
         willRain = True
     
+    print("470")
+
     # Supply water if needed.
     if(needsWater == True and willRain == False):
         sl.supplyWater(source)
+
+    print("476")
 
     # Send data onward to ThingsBoard.
     sl.sendMQTTThingsBoard(data)
