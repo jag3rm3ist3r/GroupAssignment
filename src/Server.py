@@ -359,6 +359,8 @@ class SiteLogic:
         mqttpublish.single(topic, payload, hostname=HOSTNAME)
 
     def sendMQTTThingsBoard(self, data):
+        print(data)
+        print(json.dumps(data))
         self.__tbClient.publish("v1/devices/me/telemetry", json.dumps(data))
 
 
@@ -410,7 +412,6 @@ def on_message(thisclient, userdata, message):
     print("source : " + str(source))
     '''
 
-    data = {}
     # Check what the topic is, store information in that table.
     # Sadly match - case was introduced in a later version of python.
     if(topicSplit[1] == "water_level"):
@@ -439,6 +440,8 @@ def on_message(thisclient, userdata, message):
     if(needsWater == True and willRain == False):
         sl.supplyWater(source)
     
+    # Send data to ThingsBoard.
+    data = {}
     data[message.topic] = message.payload
     sl.sendMQTTThingsBoard(data)
 
@@ -486,7 +489,7 @@ def main():
     sl.initMQTT()
 
     # This delay is here so init messages don't get mixed up with flask ones.
-    time.sleep(5)
+    time.sleep(3)
 
     # Start flask.
     app.run(
