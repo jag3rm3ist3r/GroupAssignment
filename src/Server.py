@@ -403,6 +403,7 @@ def on_message(thisclient, userdata, message):
 
     # !!! DEBUG CODE !!!
     # Debug code to display messages as they're received.
+    '''
     print("")
     print("DEBUG on_message debug info")
     print("message.topic : " + str(message.topic))
@@ -410,20 +411,28 @@ def on_message(thisclient, userdata, message):
     print("topicSplit[0] : " + str(topicSplit[0]))
     print("topicSplit[1] : " + str(topicSplit[1]))
     print("source : " + str(source))
+    '''
 
+    print("Call: setDBMoisture()")
     # Check what the topic is, store information in that table.
     # Sadly match - case was introduced in a later version of python.
     if(topicSplit[1] == "water_level"):
         #print("Logging moisture : " + message.payload)
         sl.setDBMoisture(source, message.payload)
 
+    print("Call: setDBLight()")
+
     if(topicSplit[1] == "light_level"):
         #print("Logging light level : " + message.payload)
         sl.setDBLight(source, message.payload)
 
+    print("Call: setDBButton()")
+
     if(topicSplit[1] == "button"):
         #print("Logging button press : " + message.payload)
         sl.setDBButton(source, message.payload)
+
+    print("Test: needsWater")
     
     needsWater = False
     willRain = False
@@ -431,17 +440,27 @@ def on_message(thisclient, userdata, message):
     if(sl.getDBAveMoist(20) < sl.getDBTargetMoist(source)):
         needsWater = True
 
+    print("Test: willRain")
+
     # Check if there will be enough water today to water the plant.
     if(sl.getAPIWeatherRain()[0] < 2):
         willRain = True
+
+    print("Call: supplyWater")
     
     # Supply water if needed.
     if(needsWater == True and willRain == False):
         sl.supplyWater(source)
+
+    print("Create: dict data")
     
     # Send data to ThingsBoard.
     data = {}
+
+    print("Populate: dict data")
+
     data[message.topic] = message.payload
+
     print("DEBUG outside")
     print(data)
     print(json.dumps(data))
