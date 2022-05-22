@@ -359,6 +359,7 @@ class SiteLogic:
         mqttpublish.single(topic, payload, hostname=HOSTNAME)
 
     def sendMQTTThingsBoard(self, data):
+        print("DEBUG inside")
         print(data)
         print(json.dumps(data))
         self.__tbClient.publish("v1/devices/me/telemetry", json.dumps(data))
@@ -443,6 +444,9 @@ def on_message(thisclient, userdata, message):
     # Send data to ThingsBoard.
     data = {}
     data[message.topic] = message.payload
+    print("DEBUG outside")
+    print(data)
+    print(json.dumps(data))
     sl.sendMQTTThingsBoard(data)
 
 
