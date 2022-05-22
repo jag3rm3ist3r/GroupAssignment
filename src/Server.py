@@ -35,6 +35,8 @@ EDGE_COUNT=int(sys.argv[1])
 HOSTNAME=sys.argv[2]
 EDGE_NUMBERING_OFFSET = 1
 WEATHER_URL = "https://api.open-meteo.com/v1/forecast?latitude=-37.840&longitude=144.946&daily=precipitation_sum&timezone=Australia%2FSydney"
+ACCESS_TOKEN = '7JXPZYpKiPk3gLl8wyhM'
+THINGSBOARD_ADDRESS = 'thingsboard.cloud'
 
 
 
@@ -189,6 +191,9 @@ class SiteLogic:
                 "VALUES('target_light', '0', '" + str(j) + "');"
             )
 
+        self.__tbClient = mqttclient.Client()
+        self.__tbClient.username_pw_set(ACCESS_TOKEN)
+        self.__tbClient.connect(THINGSBOARD_ADDRESS, 1883, 60) 
 
         print("mqtt init loop complete")
 
@@ -353,6 +358,9 @@ class SiteLogic:
         payload = "THIS IS IGNORED."
         mqttpublish.single(topic, payload, hostname=HOSTNAME)
 
+    def sendMQTTThingsBoard(self, data):
+        self.__tbClient.publish("v1/devices/me/telemetry", json.dumps(data))
+
 
 # Function bound to pahoMQTT
 # thisclient : ?
@@ -402,19 +410,23 @@ def on_message(thisclient, userdata, message):
     print("source : " + str(source))
     '''
 
+    data = {}
     # Check what the topic is, store information in that table.
     # Sadly match - case was introduced in a later version of python.
     if(topicSplit[1] == "water_level"):
         #print("Logging moisture : " + message.payload)
         sl.setDBMoisture(source, message.payload)
+        data['water_level'] = message.payload
 
     if(topicSplit[1] == "light_level"):
         #print("Logging light level : " + message.payload)
         sl.setDBLight(source, message.payload)
+        data['light_level'] = message.payload
 
     if(topicSplit[1] == "button"):
         #print("Logging button press : " + message.payload)
         sl.setDBButton(source, message.payload)
+        data['button'] = message.payload
     
     needsWater = False
     willRain = False
@@ -429,6 +441,8 @@ def on_message(thisclient, userdata, message):
     # Supply water if needed.
     if(needsWater == True and willRain == False):
         sl.supplyWater(source)
+    
+    sl.sendMQTTThingsBoard(data)
 
 
 # index.html file operation
@@ -490,3 +504,27 @@ if __name__ == '__main__':
     # Thank you Mario!
     # But our main() is in another castle. 
     main()
+
+
+'''
+
+import paho.mqtt.client as mqtt
+import time
+import json
+
+ACCESS_TOKEN = '7JXPZYpKiPk3gLl8wyhM'
+THINGSBOARD_ADDRESS = 'thingsboard.cloud'
+
+client = mqtt.Client()
+
+client.username_pw_set(ACCESS_TOKEN)
+client.connect(THINGSBOARD_ADDRESS, 1883, 60)
+client.loop_start()
+data = {}
+data['water_level'] = 7
+
+while(True):
+    client.publish("v1/devices/me/telemetry", json.dumps(data))
+    time.sleep(5)
+
+'''
