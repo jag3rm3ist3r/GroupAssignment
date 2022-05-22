@@ -416,17 +416,14 @@ def on_message(thisclient, userdata, message):
     if(topicSplit[1] == "water_level"):
         #print("Logging moisture : " + message.payload)
         sl.setDBMoisture(source, message.payload)
-        data['water_level'] = message.payload
 
     if(topicSplit[1] == "light_level"):
         #print("Logging light level : " + message.payload)
         sl.setDBLight(source, message.payload)
-        data['light_level'] = message.payload
 
     if(topicSplit[1] == "button"):
         #print("Logging button press : " + message.payload)
         sl.setDBButton(source, message.payload)
-        data['button'] = message.payload
     
     needsWater = False
     willRain = False
@@ -442,6 +439,7 @@ def on_message(thisclient, userdata, message):
     if(needsWater == True and willRain == False):
         sl.supplyWater(source)
     
+    data[message.topic] = message.payload
     sl.sendMQTTThingsBoard(data)
 
 
