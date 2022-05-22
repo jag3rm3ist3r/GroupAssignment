@@ -141,7 +141,9 @@ class SiteLogic:
         for i in range(int(EDGE_COUNT)):
             # User userdata as the index for if we don't know which client is
             #+calling a function.
-            self.__client.append(mqttclient.Client(userdata=str(i)))
+            self.__client.append(
+                mqttclient.Client(userdata=str(i + EDGE_NUMBERING_OFFSET))
+            )
             #print("Creating MQTT client instance " + str(i))
             self.__client[i].on_connect = on_connect
             self.__client[i].on_message = on_message
