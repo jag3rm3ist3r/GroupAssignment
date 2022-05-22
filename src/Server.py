@@ -278,19 +278,25 @@ class SiteLogic:
     def getDBMoisture(self):
         # Buffer result.
         return self.__execQuery(
-            "SELECT MIN(readingId), state, source " +
+            "SELECT s.readingId, s.state, s.source " +
+            "FROM moisture s " +
+            "JOIN (SELECT MAX(readingId) AS id " +
             "FROM moisture " +
-            "GROUP BY source, state " +
-            "ORDER BY source;"
+            "GROUP BY source) max " +
+            "ON s.readingId = max.id " +
+            "ORDER BY s.source;"
         )
 
     # Getter for most recent DB light reading.
     def getDBLight(self):
         return self.__execQuery(
-            "SELECT MIN(readingId), state, source " +
+            "SELECT s.readingId, s.state, s.source " +
+            "FROM light s " +
+            "JOIN (SELECT MAX(readingId) AS id " +
             "FROM light " +
-            "GROUP BY source, state " +
-            "ORDER BY source;"
+            "GROUP BY source) max " +
+            "ON s.readingId = max.id " +
+            "ORDER BY s.source;"
         )
 
     # Getter for most recent # DB moisture readings.
