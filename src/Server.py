@@ -428,19 +428,27 @@ def on_message(thisclient, userdata, message):
     print("source : " + str(source))
     '''
 
+    print("431")
+
     # Check what the topic is, store information in that table.
     # Sadly match - case was introduced in a later version of python.
     if(topicSplit[1] == "water_level"):
         #print("Logging moisture : " + message.payload)
         sl.setDBMoisture(source, message.payload)
 
+    print("439")
+
     if(topicSplit[1] == "light_level"):
         #print("Logging light level : " + message.payload)
         sl.setDBLight(source, message.payload)
 
+    print("445")
+
     if(topicSplit[1] == "button"):
         #print("Logging button press : " + message.payload)
         sl.setDBButton(source, message.payload)
+
+    print("451")
 
     needsWater = False
     willRain = False
@@ -448,13 +456,19 @@ def on_message(thisclient, userdata, message):
     if(sl.getDBAveMoistById(source, 20) < sl.getDBTargetMoistById(source)):
         needsWater = True
 
+    print("459")
+
     # Check if there will be enough water today to water the plant.
     if(sl.getAPIWeatherRain()[0] > 2):
         willRain = True
 
+    print("465")
+
     # Supply water if needed.
     if(needsWater == True and willRain == False):
         sl.supplyWater(source)
+
+    print("471")
 
     # !!! DEBUG CODE !!!
     sl.supplyWater(source)
