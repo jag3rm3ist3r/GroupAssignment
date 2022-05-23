@@ -415,7 +415,6 @@ def on_message(thisclient, userdata, message):
 
     # !!! DEBUG CODE !!!
     # Debug code to display messages as they're received.
-    '''
     print("")
     print("DEBUG on_message debug info")
     print("message.topic : " + str(message.topic))
@@ -423,7 +422,6 @@ def on_message(thisclient, userdata, message):
     print("topicSplit[0] : " + str(topicSplit[0]))
     print("topicSplit[1] : " + str(topicSplit[1]))
     print("source : " + str(source))
-    '''
 
     # Check what the topic is, store information in that table.
     # Sadly match - case was introduced in a later version of python.
