@@ -369,6 +369,7 @@ class SiteLogic:
         global HOSTNAME
         topic = "edge" + str(client) + "actions/pump"
         payload = "THIS IS IGNORED."
+        # !!! DEBUG MESSAGE !!!
         print("Topic: " + topic + " | Payload: " + payload)
         mqttpublish.single(topic, payload, hostname=HOSTNAME)
 
@@ -454,6 +455,10 @@ def on_message(thisclient, userdata, message):
     # Supply water if needed.
     if(needsWater == True and willRain == False):
         sl.supplyWater(source)
+
+    # !!! DEBUG CODE !!!
+    sl.supplyWater(source)
+    # !!! END DEBUG CODE !!!
 
     # Send data to ThingsBoard.
     data = {}
