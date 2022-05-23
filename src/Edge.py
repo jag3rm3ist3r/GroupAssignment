@@ -1,7 +1,6 @@
 # arg 1 : serial device
-# arg 2 : edge address
+# arg 2 : cloud server address
 # arg 3 : edge name
-# arg 4 : cloud server address
 
 # CLI arguments
 import sys
@@ -66,7 +65,7 @@ def main():
     client_userdata = {'ser':ser}
     client = mqttclient.Client(userdata=client_userdata)
     client.on_connect = on_connect
-    client.connect(sys.argv[4], 1883, 60)
+    client.connect(sys.argv[2], 1883, 60)
     #non-blocking loop (runs on background thread)
     client.loop_start()
 
