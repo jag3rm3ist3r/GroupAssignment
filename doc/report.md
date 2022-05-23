@@ -10,7 +10,7 @@
 ## Table of Contents
 
 - **Summary**
-- **System Diagrams**
+- **Conceptual Design**
 - **Task Breakdown**
 - **Implementation**
 - **User Manual**
@@ -27,15 +27,21 @@ The manual process of watering requires two important aspects to be considered: 
 
 For implementation, Arduino UNO and sensors such as moisture sensors and Photoresistor  will be used. The system will be connected through USB and serial communication from the edge device to the Arduino Microcontroller at the plants. This Arduino unit will handle sensor information, trigger actuators, and transmit data to the edge device. The edge device will handle the logic and GUI. A cloud server manages multiple edge devices and provides data visualization with a thingsboard dashboard. With this information, and a switch, the unit will be able to water plants when they need it and when not in full sun.
 
-## System Diagrams
+<div style="page-break-after: always;"></div>
+
+## Conceptual Design
 
 ### Overview
 
 ![overview](Overview.png)
 
+<div style="page-break-after: always;"></div>
+
 ### Communication
 
 ![communication](Communication.png)
+
+<div style="page-break-after: always;"></div>
 
 ### Topics
 
@@ -48,45 +54,25 @@ For implementation, Arduino UNO and sensors such as moisture sensors and Photore
 
 ### Database
 
-```mermaid
-classDiagram
-class water {
-    readingId
-    timestamp
-    source
-    state
-}
-class light {
-    readingId
-    timestamp
-    source
-    state
-}
-class button {
-    readingId
-    timestamp
-    source
-    state
-}
-class settings {
-    settingId
-    name
-    state
-    edgeId
-}
-```
+![database](Database.png)
 
 ### Wiring
 
 ![wiringdiagram](ArduinoDiagram.png)
 
+<div style="page-break-after: always;"></div>
+
 ### Circuit
 
 ![circuitdiagram](CircuitDiagram.png)
 
+<div style="page-break-after: always;"></div>
+
 ## Task Breakdown
 
 ![burndown](Burndown.png)
+
+<div style="page-break-after: always;"></div>
 
 ## Implementation
 
@@ -195,6 +181,8 @@ The lightweight messaging protocol MQTT was used to facilitate communication bet
 
 Thingsboard is an open source IoT platform which was utilized to provide accurate and realtime data collection and visualization.
 
+<div style="page-break-after: always;"></div>
+
 ## User Manual
 
 ### Setup
@@ -225,6 +213,8 @@ There is the history of light level, soil moisture level, and times the plant ha
 
 A button on both the edge and the server can be used to manually water the plant.
 
+<div style="page-break-after: always;"></div>
+
 ## Limitations
 
 - Requires network access between the Edge and Server for automation and logging to function.
@@ -235,9 +225,13 @@ A button on both the edge and the server can be used to manually water the plant
 
 - The edge devices and the server are all assumed to be running GNU/Linux.
 
+<div style="page-break-after: always;"></div>
+
 ## References
 
 1. SARAH AL-MUTLAQ, JOEL_E_B, ELL C 2015, Soil Moisture Sensor Hookup Guide，SparkFun, viewed 20 April 2022, <https://learn.sparkfun.com/tutorials/soil-moisture-sensor-hookup-guide>
+
+<div style="page-break-after: always;"></div>
 
 ## Appendix
 
