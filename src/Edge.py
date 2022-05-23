@@ -23,7 +23,7 @@ node1 = {"watered": 0,
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code " + str(rc))
     #arg 3 is edge id
-    client.subscribe(sys.argv[3] + "/#")
+    client.subscribe(sys.argv[3] + "actions/#")
 
 #topics are pump and led
 #send serial instructions to node for pump or led
