@@ -360,6 +360,14 @@ class SiteLogic:
 			"LIMIT " + str(ammount) + ";"
 		)
 
+	def getDBAveLightById(self, source, ammount):
+		return self.__execQuery(
+			"SELECT AVG(state) " +
+			"FROM light "
+			"WHERE source='" + str(source) + "' " +
+			"LIMIT " + str(ammount) + ";"
+		)
+
 	# Getter for average of last # DB light readings.
 	def getDBAveLight(self, ammount):
 		return self.__execQuery(
@@ -485,7 +493,7 @@ def on_message(thisclient, userdata, message):
 		willRain = True
 
     # Check if it's too sunny to bother with watering the plants.
-	if(sl.getDBLightById(source) > sl.getDBTargetLightById(source)):
+	if(sl.getDBAveLightById(source) > sl.getDBTargetLightById(source)):
 		tooSunny = True
 
 	# Supply water if needed.
