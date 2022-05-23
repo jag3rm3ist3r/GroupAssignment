@@ -506,8 +506,8 @@ def on_message(thisclient, userdata, message):
 
     # Check if it's too sunny to bother with watering the plants.
 	print(source)
-	print(sl.getDBAveLightById(source, 20) + " : " + source)
-	print(sl.getDBTargetLightById(source) + " : " + source)
+	print(sl.getDBAveLightById(source, 20))
+	print(sl.getDBTargetLightById(source))
 	if(sl.getDBAveLightById(source, 20) > sl.getDBTargetLightById(source)):
 		tooSunny = True
 
