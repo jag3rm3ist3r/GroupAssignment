@@ -83,7 +83,7 @@ class SiteLogic:
             "readingId SERIAL PRIMARY KEY NOT NULL, " +
             "timestamp VARCHAR(20) NOT NULL," +
             "source VARCHAR(20) NOT NULL," +
-            "state INT NOT NULL);"
+            "state DECIMAL NOT NULL);"
         )
 
         # LIGHT
@@ -96,7 +96,7 @@ class SiteLogic:
             "readingId SERIAL PRIMARY KEY NOT NULL, " +
             "timestamp VARCHAR(20) NOT NULL," +
             "source VARCHAR(20) NOT NULL," +
-            "state INT NOT NULL);"
+            "state DECIMAL NOT NULL);"
         )
 
         # BUTTON
@@ -428,27 +428,19 @@ def on_message(thisclient, userdata, message):
     print("source : " + str(source))
     '''
 
-    print("431")
-
     # Check what the topic is, store information in that table.
     # Sadly match - case was introduced in a later version of python.
     if(topicSplit[1] == "water_level"):
         #print("Logging moisture : " + message.payload)
         sl.setDBMoisture(source, message.payload)
 
-    print("439")
-
     if(topicSplit[1] == "light_level"):
         #print("Logging light level : " + message.payload)
         sl.setDBLight(source, message.payload)
 
-    print("445")
-
     if(topicSplit[1] == "button"):
         #print("Logging button press : " + message.payload)
         sl.setDBButton(source, message.payload)
-
-    print("451")
 
     needsWater = False
     willRain = False
