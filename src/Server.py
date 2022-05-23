@@ -473,13 +473,19 @@ def on_message(thisclient, userdata, message):
 		#print("Logging moisture : " + message.payload)
 		sl.setDBMoisture(source, message.payload)
 
+	print("1")
+
 	if(topicSplit[1] == "light_level"):
 		#print("Logging light level : " + message.payload)
 		sl.setDBLight(source, message.payload)
 
+	print("2")
+
 	if(topicSplit[1] == "button"):
 		#print("Logging button press : " + message.payload)
 		sl.setDBButton(source, message.payload)
+
+	print("3")
 
 	needsWater = False
 	willRain = False
@@ -488,20 +494,26 @@ def on_message(thisclient, userdata, message):
 	if(sl.getDBAveMoistById(source, 20) < sl.getDBTargetMoistById(source)):
 		needsWater = True
 
+	print("4")
+
 	# Check if there will be enough water today to water the plant.
 	if(sl.getAPIWeatherRain()[0] > sl.getDBTargetRainById(source)):
 		willRain = True
 
+	print("5")
+
     # Check if it's too sunny to bother with watering the plants.
 	if(sl.getDBAveLightById(source) > sl.getDBTargetLightById(source)):
 		tooSunny = True
+
+	print("6")
 
 	# Supply water if needed.
 	if(needsWater == True and willRain == False and tooSunny == False):
 		sl.supplyWater(source)
 
 	# !!! DEBUG CODE !!!
-	sl.supplyWater(source)
+	#sl.supplyWater(source)
 	# !!! END DEBUG CODE !!!
 
 	# Send data to ThingsBoard.
