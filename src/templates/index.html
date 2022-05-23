@@ -21,79 +21,107 @@
 	<body>
 		<h1>IOT Group Assignment - {{ time }}</h1>
 
+		<a href="https://thingsboard.cloud/dashboard/574f8790-d9c4-11ec-a502-79978f9d7342?publicId=b81e3c90-d9da-11ec-8358-ed280d61aec5">Thingsboard Dashboard: See your devices in action!</a>
+
 		<!-- Current status of the sensors. -->
 		<h2>Soil Moisture</h2>
 		<div>
-		{% for m in moisture %}
+			{% for m in moisture %}
 			<div>
-			The soil moisture on edge {{ m[2] }} is currently {{ m[1] }}
+				The soil moisture on edge {{ m[2] }} is currently {{ m[1] }}
 			</div>
-		{% endfor %}
+			{% endfor %}
 		</div>
 
 		<h2>Light</h2>
 		<div>
-		{% for l in light %}
+			{% for l in light %}
 			<div>
-			The light on edge {{ l[2] }} is currently {{ l[1] }}
+				The light on edge {{ l[2] }} is currently {{ l[1] }}
 			</div>
-		{% endfor %}
+			{% endfor %}
 		</div>
-		
+
+
+		{% for l in light %}
+		<div>
+			<div>
+				<a href="/pumpbutton/{{1[2]}}">Activate Pump {{ l[2] }}</a>
+			</div>
+		</div>
+		{% endfor %}
+
 		<h2>Moisture Targets</h2>
 		<div>
-		{% for targets in moisttarget %}
+			{% for targets in moisttarget %}
 			<div>
 				Moisture target for edge {{ targets[1] }} : {{ targets[0] }}
-				<a	href={{ '/moisture/' ~ targets[1] ~ '/up' }}
-					role="button">Up</a>/
-				<a	href={{ '/moisture/' ~ targets[1] ~ '/down' }}
-					role="button">Down</a>
+				<a href={{ '/moisture/' ~ targets[1] ~ '/up' }}
+				   role="button">Up</a>/
+				<a href={{ '/moisture/' ~ targets[1] ~ '/down' }}
+				   role="button">Down</a>
 			</div>
-		{% endfor %}
+			{% endfor %}
 		</div>
 
 		<h2>Light Targets</h2>
 		<div>
-		{% for targets in lighttarget %}
+			{% for targets in lighttarget %}
 			<div>
 				Light target for edge {{ targets[1] }} : {{ targets[0] }}
-				<a	href={{ '/light/' ~ targets[1] ~ '/up' }}
-					role="button">Up</a>/
-				<a	href={{ '/light/' ~ targets[1] ~ '/down' }}
-					role="button">Down</a>
+				<a href={{ '/light/' ~ targets[1] ~ '/up' }}
+				   role="button">Up</a>/
+				<a href={{ '/light/' ~ targets[1] ~ '/down' }}
+				   role="button">Down</a>
 			</div>
-		{% endfor %}
+			{% endfor %}
+		</div>
+
+		<h2>Rain Targets</h2>
+		<div>
+			{% for targets in raintarget %}
+			<div>
+				Rain target for edge {{ targets[1] }} : {{ targets[0] }}
+				<a href={{ '/rain/' ~ targets[1] ~ '/up' }}
+				   role="button">Up</a>/
+				<a href={{ '/rain/' ~ targets[1] ~ '/down' }}
+				   role="button">Down</a>
+			</div>
+			{% endfor %}
 		</div>
 
 		<h2>Weather</h2>
 		<div>Today's rain: {{ weather[0] }}mm</div>
 		<div>Tomorrow's rain: {{ weather[1] }}mm</div>
 
-		<h2>Sensor reading history</h2>		
+		<h2>Sensor reading history</h2>
 		<h3>Recent Moisture Data</h3>
 
 		<table>
-		<th>Timestamp</th><th>Source</th><th>Soil Moisture</th>
-		{% for row in recentmoist %}
+			<th>Timestamp</th>
+			<th>Source</th>
+			<th>Soil Moisture</th>
+			{% for row in recentmoist %}
 			<tr>
 				<td>{{ row[0] }}</td>
 				<td>{{ row[1] }}</td>
 				<td>{{ row[2] }}</td>
 			</tr>
-		{% endfor %}
+			{% endfor %}
 		</table>
 
 		<h3>Recent Light Data</h3>
 		<table>
-		<th>Timestamp</th><th>Source</th><th>Light</th>
-		{% for row in recentlight %}
+			<th>Timestamp</th>
+			<th>Source</th>
+			<th>Light</th>
+			{% for row in recentlight %}
 			<tr>
 				<td>{{ row[0] }}</td>
 				<td>{{ row[1] }}</td>
 				<td>{{ row[2] }}</td>
 			</tr>
-		{% endfor %}
+			{% endfor %}
 		</table>
 	</body>
 </html>
