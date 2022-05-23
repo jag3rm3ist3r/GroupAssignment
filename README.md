@@ -50,7 +50,7 @@ CloudServer --> ThingsBoard : MQTT
 ## Communication Diagram
 
 (actions: pump, led)
-(data: button, water_level, light_level)
+(data: watered, button, water_level, light_level)
 
 ```mermaid
 classDiagram
