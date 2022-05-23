@@ -484,6 +484,13 @@ def on_message(thisclient, userdata, message):
     sl.sendMQTTThingsBoard(data)
 
 
+@app.route("/pumpbutton/<source>")
+def pumpButton(source):
+    global sl
+    sl.supplyWater(source)
+    templateData = sl.getTemplateData()
+    return render_template('index.html', **templateData)
+
 # index.html file operation
 @app.route("/")
 def index():
