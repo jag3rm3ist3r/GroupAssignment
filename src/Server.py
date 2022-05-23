@@ -501,7 +501,7 @@ def on_message(thisclient, userdata, message):
 		sl.supplyWater(source)
 
 	# !!! DEBUG CODE !!!
-	#sl.supplyWater(source)
+	sl.supplyWater(source)
 	# !!! END DEBUG CODE !!!
 
 	# Send data to ThingsBoard.
