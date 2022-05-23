@@ -240,7 +240,7 @@ class SiteLogic:
 		)[0][0]
 
 	# Getter for DB rain targets.
-	def getDBTargetMoist(self):
+	def getDBTargetRain(self):
 		return self.__execQuery(
 			"SELECT state, edgeId FROM settings " +
 			"WHERE name='target_rain' " +
@@ -248,7 +248,7 @@ class SiteLogic:
 		)
 
 	# Setter for DB rain target.
-	def setDBTargetMoist(self, edgeId, state):
+	def setDBTargetRain(self, edgeId, state):
 		self.__execQuery(
 			"UPDATE settings SET " +
 			"state='" + str(state) + "' " +
