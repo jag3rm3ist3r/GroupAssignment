@@ -190,7 +190,7 @@ class SiteLogic:
 			)
 			self.__execQuery(
 				"INSERT INTO settings (name, state, edgeId) " +
-				"VALUES('target_light', '0', '" + str(j) + "');"
+				"VALUES('target_light', '50', '" + str(j) + "');"
 			)
 			self.__execQuery(
 				"INSERT INTO settings (name, state, edgeId) " +
