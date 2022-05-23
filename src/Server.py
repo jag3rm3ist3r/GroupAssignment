@@ -555,9 +555,9 @@ def adjustTarget(targetName, edgeId, direction):
 	# Adjust rain.
 	if (targetName == 'rain'):
 		if(direction == 'up'):
-			newVal = Decimal(sl.getDBTargetRainById(edgeId)) + Decimal(0.10)
+			newVal = Decimal(sl.getDBTargetRainById(edgeId)) + Decimal(1.00)
 		else:
-			newVal = Decimal(sl.getDBTargetRainById(edgeId)) - Decimal(0.10)
+			newVal = Decimal(sl.getDBTargetRainById(edgeId)) - Decimal(1.00)
 
 		sl.setDBTargetRain(edgeId, newVal)
 
