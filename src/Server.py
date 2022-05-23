@@ -446,7 +446,7 @@ def on_message(thisclient, userdata, message):
         needsWater = True
 
     # Check if there will be enough water today to water the plant.
-    if(sl.getAPIWeatherRain()[0] < 2):
+    if(sl.getAPIWeatherRain()[0] > 2):
         willRain = True
 
     # Supply water if needed.
