@@ -25,7 +25,7 @@ def on_connect(client, userdata, flags, rc):
     #arg 3 is edge id
     client.subscribe(sys.argv[3] + "/#")
 
-#topics are pump and light
+#topics are pump and led
 #send serial instructions to node for pump or led
 def on_message(client, userdata, msg):
     if (msg.topic == (sys.argv[3] + "actions/pump")):
