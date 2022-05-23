@@ -46,7 +46,8 @@
 		{% for l in light %}
 		<div>
 			<div>
-				<a href="/pumpbutton/{{1[2]}}">Activate Pump {{ l[2] }}</a>
+				<!--<a href="/pumpbutton/{{1[2]}}">Activate Pump {{ l[2] }}</a>-->
+				<a href={{ '/pumpbutton/' ~ l[2]}}>Activate Pump {{ l[2] }}</a>
 			</div>
 		</div>
 		{% endfor %}
