@@ -522,7 +522,7 @@ def adjustTarget(targetName, edgeId, direction):
 def main():
     global sl
     # Set argument to true if you would like to retain existing data in table.
-    sl = SiteLogic(True)
+    sl = SiteLogic(False)
     # Setup MQTT, which relies on sl being defined first.
     sl.initMQTT()
 
