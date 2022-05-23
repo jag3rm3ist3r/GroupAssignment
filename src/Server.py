@@ -510,7 +510,9 @@ def on_message(thisclient, userdata, message):
 	print(sl.getDBAveLightById(source, 20))
 	print("getDBTargetLightById")
 	print(sl.getDBTargetLightById(source))
-	if(sl.getDBAveLightById(source, 20) > sl.getDBTargetLightById(source)):
+
+	if( Decimal(sl.getDBAveLightById(source, 20)) >
+		Decimal(sl.getDBTargetLightById(source))):
 		tooSunny = True
 
 	print("6")
