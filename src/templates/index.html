@@ -77,6 +77,19 @@
 			{% endfor %}
 		</div>
 
+		<h2>Rain Targets</h2>
+		<div>
+			{% for targets in raintarget %}
+			<div>
+				Rain target for edge {{ targets[1] }} : {{ targets[0] }}
+				<a href={{ '/rain/' ~ targets[1] ~ '/up' }}
+				   role="button">Up</a>/
+				<a href={{ '/rain/' ~ targets[1] ~ '/down' }}
+				   role="button">Down</a>
+			</div>
+			{% endfor %}
+		</div>
+
 		<h2>Weather</h2>
 		<div>Today's rain: {{ weather[0] }}mm</div>
 		<div>Tomorrow's rain: {{ weather[1] }}mm</div>
