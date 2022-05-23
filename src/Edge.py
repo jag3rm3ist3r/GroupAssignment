@@ -28,10 +28,10 @@ def on_connect(client, userdata, flags, rc):
 #topics are pump and light
 #send serial instructions to node for pump or led
 def on_message(client, userdata, msg):
-    if (msg.topic == (sys.argv[3] + "/pump")):
+    if (msg.topic == (sys.argv[3] + "actions/pump")):
         print("pump")
         userdata['ser'].write(b"1")
-    if (msg.topic == (sys.argv[3] + "/led")):
+    if (msg.topic == (sys.argv[3] + "actions/led")):
         userdata['ser'].write(b"2")
         print ("led")
 
