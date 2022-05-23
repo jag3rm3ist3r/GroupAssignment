@@ -475,24 +475,22 @@ def on_message(thisclient, userdata, message):
 
 	needsWater = False
 	willRain = False
+	tooSunny = False
 	# Check if the plant needs water.
 	if(sl.getDBAveMoistById(source, 20) < sl.getDBTargetMoistById(source)):
-		
 		needsWater = True
 
-	print("459")
-
 	# Check if there will be enough water today to water the plant.
-	if(sl.getAPIWeatherRain()[0] > 2):
+	if(sl.getAPIWeatherRain()[0] > sl.getDBTargetRainById(source)):
 		willRain = True
 
-	print("465")
+    # Check if it's too sunny to bother with watering the plants.
+	if(sl.getDBLightById(source) > sl.getDBTargetLightById(source)):
+		tooSunny = True
 
 	# Supply water if needed.
-	if(needsWater == True and willRain == False):
+	if(needsWater == True and willRain == False and tooSunny == False):
 		sl.supplyWater(source)
-
-	print("471")
 
 	# !!! DEBUG CODE !!!
 	#sl.supplyWater(source)
@@ -557,9 +555,9 @@ def adjustTarget(targetName, edgeId, direction):
 	# Adjust rain.
 	if (targetName == 'rain'):
 		if(direction == 'up'):
-			newVal = Decimal(sl.getDBTargetRainById(edgeId)) + Decimal(1.00)
+			newVal = Decimal(sl.getDBTargetRainById(edgeId)) + Decimal(0.10)
 		else:
-			newVal = Decimal(sl.getDBTargetRainById(edgeId)) - Decimal(1.00)
+			newVal = Decimal(sl.getDBTargetRainById(edgeId)) - Decimal(0.10)
 
 		sl.setDBTargetRain(edgeId, newVal)
 
