@@ -366,7 +366,7 @@ class SiteLogic:
 			"FROM light "
 			"WHERE source='" + str(source) + "' " +
 			"LIMIT " + str(ammount) + ";"
-		)[0]
+		)[0][0]
 
 	# Getter for average of last # DB light readings.
 	def getDBAveLight(self, ammount):
