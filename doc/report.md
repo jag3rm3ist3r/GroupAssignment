@@ -3,11 +3,19 @@
 **Etienne Bovet 103168804**  
 **Matthew Hulme 103112063**  
 **25th April 2022**  
-**Demo: !!! ADD LINK HERE !!!**  
+**Demo: https://youtu.be/5cDlGAlzY-c**  
 
 <div style="page-break-after: always;"></div>
 
-!!! DO TABLE OF CONTENTS BEFORE SUBMIT !!!
+## Table of Contents
+
+- **Summary**
+- **System Diagrams**
+- **Task Breakdown**
+- **Implementation**
+- **User Manual**
+- **Limitations**
+- **References**
 
 <div style="page-break-after: always;"></div>
 
