@@ -510,6 +510,11 @@ def on_message(thisclient, userdata, message):
 
 	print("6")
 
+	print(needsWater)
+	print(willRain)
+	print(tooSunny)
+	print(needsWater == True and willRain == False and tooSunny == False)
+
 	# Supply water if needed.
 	if(needsWater == True and willRain == False and tooSunny == False):
 		sl.supplyWater(source)
