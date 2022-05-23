@@ -369,6 +369,7 @@ class SiteLogic:
         global HOSTNAME
         topic = "edge" + str(client) + "actions/pump"
         payload = "THIS IS IGNORED."
+        print("Topic: " + topic + " | Payload: " + payload)
         mqttpublish.single(topic, payload, hostname=HOSTNAME)
 
     def sendMQTTThingsBoard(self, data):
