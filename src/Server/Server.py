@@ -358,7 +358,7 @@ class SiteLogic:
 			"FROM moisture "
 			"WHERE source='" + str(source) + "' " +
 			"LIMIT " + str(ammount) + ";"
-		)
+		)[0][0]
 
 	def getDBAveLightById(self, source, ammount):
 		return self.__execQuery(
